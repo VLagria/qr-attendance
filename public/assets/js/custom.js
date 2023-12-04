@@ -21,12 +21,10 @@ $("#login").on("click", function () {
     // Make AJAX request
     $.ajax({
         type: "POST",
-        url: "api/login", // Replace with your actual login endpoint
+        url: "login", // Replace with your actual login endpoint
         data: formData,
         success: function (response) {
             var accessToken = response.token;
-            console.log(accessToken);
-            // Store the access token in localStorage
             localStorage.setItem("access_token", accessToken);
 
             // Redirect to the admin dashboard or perform other actions
@@ -38,4 +36,10 @@ $("#login").on("click", function () {
             $("#error-message").text(errorMessage);
         },
     });
+
+
 });
+
+// function fetchList(){
+
+// }

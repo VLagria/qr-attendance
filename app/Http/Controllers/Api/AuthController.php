@@ -62,12 +62,11 @@ class AuthController extends Controller
     }
     public function logout(Request $request)
     {
-        $token = $request->access_token;
-        DB::table('oauth_access_tokens')
-            ->where('id', $token)
-            ->update([
-                'revoked' => true
-            ]);
+        $u = auth()->user();
+        $u->tokens->each(function ($token, $key) {
+            $token->delete();
+        });
+        Auth::logout();
 
         $response = ['message' => 'You have been successfully logged out!'];
         return redirect()->route('auth.login');

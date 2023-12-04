@@ -74,8 +74,8 @@ $(document).ready(function () {
             },
             data: formData,
             success: function (data) {
-                console.log(data);
-                $("#student-list-container").html(data);
+                window.location.href = "/";
+                
             },
         });
     });

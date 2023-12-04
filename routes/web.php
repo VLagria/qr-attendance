@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\QrGeneratorController;
 */
 
 Route::group(['middleware' => ['cors', 'json.response']], function () {
+    Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('/', [AuthController::class, 'showLogin'])->name('auth.login');
     Route::middleware('auth')->get('admin-dashboard', [AdminController::class, 'showDashboard'])->name('admin.dashboard');

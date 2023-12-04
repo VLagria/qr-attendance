@@ -3,7 +3,6 @@
 use App\Http\Controllers\Api\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\QrGeneratorController;
 use App\Http\Controllers\Api\AuthController;
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +18,4 @@ use App\Http\Controllers\Api\AuthController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::group(['middleware' => ['cors', 'json.response']], function () {
-    Route::post('login', [AuthController::class, 'login'])->name('api.login');
-});
+Route::post('attendance-check', [AuthController::class, 'attendanceCheck'])->name('attendance.check');

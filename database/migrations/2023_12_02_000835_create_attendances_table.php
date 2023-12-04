@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->boolean('is_present');
             $table->unsignedBigInteger('student_id');
-            $table->string('date');
+            $table->date('date');
             $table->string('time');
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->timestamps();

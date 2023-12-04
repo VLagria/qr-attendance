@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\PDF;
 
 use function Laravel\Prompts\table;
 
@@ -81,7 +82,7 @@ class AdminController extends Controller
             $student = Student::where('id', $id)->first();
             return response(['data' => $student], 200);
         } catch (ModelNotFoundException $e) {
-            return response(['error' => 'customer not found', 'msg' => $e->getMessage()], 404);
+            return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
         } catch (\Exception $e) {
             return response(['error' => 'An error occurred', 'msg' => $e->getMessage()], 500);
         }
@@ -124,6 +125,20 @@ class AdminController extends Controller
             return response(['error' => $e->validator->errors()], 422);
         } catch (\Exception $e) {
             return response(['error' => 'Something went wrong. Please try again.', 'msg' => $e->getMessage()], 500);
+        }
+    }
+
+    public function allStudentReportByDate($date){
+        try {
+            $report = DB::table('attendances')
+                            ->join('students', 'attendances.student_id', 'students.id')
+                            ->select('students.*', 'attendances.date', 'attendances.time')
+                            ->orderBy('attendances.date', 'ASC')
+                            ->get();
+        } catch (ModelNotFoundException $e) {
+            return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response(['error' => 'An error occurred', 'msg' => $e->getMessage()], 500);
         }
     }
 }

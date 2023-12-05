@@ -14,12 +14,14 @@ $(document).ready(function () {
     });
 
     $("#update-student").on("click", ".btn-primary", function () {
+        
         // Gather data from input fields
         var id = $("#id").val();
         var student_id = $("#edit_studentid").val();
         var firstName = $("#edit_fname").val();
         var lastName = $("#edit_lname").val();
         var middleName = $("#edit_mname").val();
+        console.log(id);
 
         var csrfToken = $('meta[name="csrf-token"]').attr("content");
         const formData = {
@@ -30,6 +32,7 @@ $(document).ready(function () {
             middle_name: middleName,
             _token: csrfToken,
         };
+  
         updateStudent(formData);
         console.log(formData, csrfToken);
         // Perform AJAX request to update student details
@@ -75,6 +78,43 @@ $(document).ready(function () {
             data: formData,
             success: function (data) {
                 window.location.href = "/";
+                
+            },
+        });
+    });
+
+    $(".student-attendance").on("click", function (e) {
+        e.preventDefault();
+
+        $("#attendance_student_id").val($(this).data("student-id"));
+
+    });
+
+    $("#attendance-button").on("click", function (e) {
+        e.preventDefault();
+        var accessToken = localStorage.getItem("access_token");
+        var csrfToken = $('meta[name="csrf-token"]').attr("content");
+        console.log($('#attendance_student_id').val());
+        const formData = {
+            student_id: $('#attendance_student_id').val(),
+            attendance_type: $('#attendance_type').val(),
+            attendance_date: $('#attendance_date').val(),
+            attendance_time: $('#attendance_time').val(),
+            attendance_demerit: $('#attendance_demerit').val(),
+            attendance_merit: $('#attendance_demerit').val()
+        };
+        console.log(formData)
+        $.ajax({
+            type: "POST",
+            url: "attendance-student-manual",
+            headers: {
+                "X-CSRF-TOKEN": csrfToken,
+                Authorization: "Bearer " + accessToken,
+            },
+            data: formData,
+            success: function (data) {
+                console.log(data);
+                location.reload();
                 
             },
         });
@@ -172,10 +212,11 @@ function updateStudentList() {
             paginationContainer.html(
                 $(data).find("#pagination-container").html()
             );
-            console.log("Clearing input fields...");
+            
             $("#first_name").val("");
             $("#last_name").val("");
             $("#middle_name").val("");
+            location.reload();
         },
         error: function (error) {
             console.error("Error fetching student list:", error);

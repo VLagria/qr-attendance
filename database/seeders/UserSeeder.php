@@ -20,7 +20,8 @@ class UserSeeder extends Seeder
                 'student_id' => $faker->randomNumber($nbDigits = NULL, $strict = false),
                 'first_name' => $faker->firstName(),
                 'last_name' => $faker->lastName(),
-                'middle_name' => $faker->lastName()
+                'middle_name' => $faker->lastName(),
+                'year_lvl' => 1
             ]);
         }
     }

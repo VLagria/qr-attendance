@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->boolean('is_present');
+            $table->boolean('is_present')->nullable();
             $table->unsignedBigInteger('student_id');
             $table->date('date');
             $table->string('time');
+            $table->boolean('is_absent')->nullable();
+            $table->boolean('is_late')->nullable();
+            $table->string('demerit')->nullable();
+            $table->string('demerit_remarks')->nullable();
+            $table->string('merit')->nullable();
+            $table->string('merit_remarks')->nullable();
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->timestamps();
         });

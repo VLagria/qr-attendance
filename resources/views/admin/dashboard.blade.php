@@ -101,7 +101,7 @@
                                                 Register Student</a>
                                             {{-- <button class="btn btn-primary mb-2 mr-sm-2" id="modal-5">Register
                                                 Student</button> --}}
-                                            <a href="#" class="btn btn-icon icon-left btn-dark mb-2 mr-sm-2"><i
+                                            <a href="#" class="btn btn-icon icon-left btn-dark mb-2 mr-sm-2"  data-toggle="modal" data-target="#generate-reports"><i
                                                     class="far fa-file"></i> Generate Report</a>
                                             <form id="search-form">
                                                 <div class="input-group mb-2 mr-sm-2">
@@ -116,7 +116,7 @@
                                             <tr>
                                                 <th>Student ID#</th>
                                                 <th>Name</th>
-                                                <th style="width: 200px">Action</th>
+                                                <th style="width: 300px">Action</th>
                                             </tr>
                                             <tbody id="student-list-container">
 
@@ -261,43 +261,116 @@
                 </div>
 
                 <<!-- Modal -->
-                    <div class="modal fade" id="show-qr" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Student QR Code</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div id="qrCodeContainer">
-                                        <div data-crop-image="285">
-                                            <div style="display: flex;
-                                        justify-content: center;
-                                        align-items: center;"
-                                                class="svgImage">
+                <div class="modal fade" id="show-qr" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Student QR Code</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="qrCodeContainer">
+                                    <div data-crop-image="285">
+                                        <div style="display: flex;
+                                    justify-content: center;
+                                    align-items: center;"
+                                            class="svgImage">
 
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" id="printButton">Generate QR
-                                        Code</button>
-                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                    data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="printButton">Print QR
+                                    Code</button>
                             </div>
                         </div>
                     </div>
+                </div>
+
+                  <<!-- Modal -->
+                  <div class="modal fade" id="generate-reports" tabindex="-1" role="dialog"
+                  aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Generate Reports</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                              </button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                                <label>Date</label>
+                                <input type="date" class="form-control">
+                              </div>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary"
+                                  data-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary" id="printButton">Generate QR
+                                  Code</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+                <<!-- Modal -->
+                <div class="modal fade" id="attendance-modal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Check Attendance</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="attendance_student_id">
+                          <div class="form-group">
+                              <label>Date</label>
+                              <input type="date" name="attendance_date" id="attendance_date" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Datetime Local</label>
+                                <input type="time" class="form-control" name="attendance_time" id="attendance_time">
+                              </div>
+                            <div class="form-group">
+                                <label>Attendance</label>
+                                <select class="form-control" id="attendance_type" name="attendance_type">
+                                  <option value="1">Present</option>
+                                  <option value="2">Late</option>
+                                  <option value="0">Absent</option>
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label>Demerit</label>
+                                <input type="text" class="form-control" id="attendance_demerit" placeholder="Enter demerit">
+                              </div>
+                              <div class="form-group">
+                                <label>Merit</label>
+                                <input type="text" class="form-control" id="attendance_merit" placeholder="Enter merit">
+                              </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="attendance-button">Attendance</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
         <footer class="main-footer">
             <div class="footer-left">
-                Copyright &copy; 2018 <div class="bullet"></div> Design By <a href="https://nauval.in/">Muhamad
-                    Nauval Azhar</a>
+                Copyright &copy; 2018 <div class="bullet"></div> 
             </div>
             <div class="footer-right">
 

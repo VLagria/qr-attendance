@@ -28,6 +28,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
         Route::get('search-student/{query}', [AdminController::class, 'search']);
         Route::post('update-student', [AdminController::class, 'updateStudent']);
         Route::get('get-student-list', [AdminController::class, 'getStudentList']);
+        Route::post('attendance-student-manual', [AdminController::class, 'checkAttendance']);
         // our routes to be protected will go in here
     });
 });

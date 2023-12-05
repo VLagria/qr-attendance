@@ -113,14 +113,17 @@ class AdminController extends Controller
 
     public function attendanceCheck(Request $request)
     {
+   
         try {
-            Attendance::create([
-                'is_present' => $request->is_present,
-                'student_id' => $request->student_id,
-                'date' => $request->date,
-                'time' => $request->time
-            ]);
-            return response(['msg' => "Attendance Checked"], 200);
+            foreach ($request->attendance_date as $attendance) {
+                Attendance::create([
+                    'is_present' => $attendance->is_present,
+                    'student_id' => $attendance->student_id,
+                    'date' => $attendance->date,
+                    'time' => $attendance->time
+                ]);
+                return response(['msg' => "Attendance Checked"], 200);
+            }
         } catch (ValidationException $e) {
             return response(['error' => $e->validator->errors()], 422);
         } catch (\Exception $e) {
@@ -133,8 +136,78 @@ class AdminController extends Controller
             $report = DB::table('attendances')
                             ->join('students', 'attendances.student_id', 'students.id')
                             ->select('students.*', 'attendances.date', 'attendances.time')
+                            ->where('')
                             ->orderBy('attendances.date', 'ASC')
                             ->get();
+        } catch (ModelNotFoundException $e) {
+            return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response(['error' => 'An error occurred', 'msg' => $e->getMessage()], 500);
+        }
+    }
+
+    public function checkAttendance(Request $request){
+        try {
+
+            $demerit = 0;
+            $merit = 0;
+           
+
+            if (!empty($request->attendance_demerit)) {
+                $demerit = 1;
+            }
+
+            if (!empty($request->attendance_merit)) {
+                $merit = 1;
+            }
+
+            if ($request->attendance_type === "0") {  //absent
+                Attendance::create([
+                    'student_id' => $request->student_id,
+                    'date' => $request->attendance_date,
+                    'time' => $request->attendance_time,
+                    'is_absent' => 1,
+                    'demerit' => $demerit,
+                    'demerit_remarks' => $request->attendance_demerit,
+                    'merit' => $merit,
+                    'merit_remarks' => $request->attendance_demerit
+                ]);
+
+                return response(['msg' => "Attendance Checked"], 200);
+            }
+
+            if ($request->attendance_type === "1") { //present
+                Attendance::create([
+                    'is_present' => true,
+                    'student_id' => $request->student_id,
+                    'date' => $request->attendance_date,
+                    'time' => $request->attendance_time,
+                    'demerit' => $demerit,
+                    'demerit_remarks' => $request->attendance_demerit,
+                    'merit' => $merit,
+                    'merit_remarks' => $request->attendance_demerit
+                ]);
+
+                return response(['msg' => "Attendance Checked"], 200);
+            }
+
+            if ($request->attendance_type === "2") { //Absent
+                Attendance::create([
+                    'is_absent' => true,
+                    'student_id' => $request->student_id,
+                    'date' => $request->attendance_date,
+                    'time' => $request->attendance_time,
+                    'demerit' => $demerit,
+                    'demerit_remarks' => $request->attendance_demerit,
+                    'merit' => $merit,
+                    'merit_remarks' => $request->attendance_demerit
+                ]);
+
+                return response(['msg' => "Attendance Checked"], 200);
+                
+            }
+
+           
         } catch (ModelNotFoundException $e) {
             return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
         } catch (\Exception $e) {

@@ -70,6 +70,59 @@ $("#modal-3").fireModal({
     ],
 });
 
+// $("#modal-4").on("click", function () {
+//     var studentId = $(this).data("student-id");
+//     console.log(studentId);
+//     showQR(studentId);
+
+// });
+
+// $("#modal-4").fireModal({
+//     title: "",
+//     body: $("#modal-qr-part"),
+//     footerClass: "bg-whitesmoke",
+//     autoFocus: false,
+//     onShown: function (modal, form) {
+//         // Form Data
+//         let studentId = $(this).data("student-id");
+
+//         console.log(studentId);
+//         // AJAX to get QR code
+//         $.ajax({
+//             type: "GET",
+//             url: "/generate-qrcode/" + studentId,
+//             success: function (response) {
+//                 // Display QR code in modal
+//                 $("#svgImage").attr(
+//                     "src",
+//                     "data:image/svg+xml;charset=utf-8," +
+//                         encodeURIComponent(response)
+//                 );
+//             },
+//             error: function (error) {
+//                 console.error("Error:", error);
+//             },
+//         });
+
+//         e.preventDefault();
+//     },
+//     shown: function (modal, form) {
+//         console.log(form);
+//     },
+//     buttons: [
+//         {
+//             text: "Download QR",
+//             submit: true,
+//             class: "btn btn-primary btn-shadow",
+//             handler: function (modal) {},
+//         },
+//     ],
+// });
+
+// $("#modal-qr-part").on("hidden.bs.modal", function () {
+//     console.log("Modal hidden!");
+//     // You can perform additional cleanup here if needed
+// });
 
 function showQR(studentId) {
     console.log("Modal shown!");
@@ -122,8 +175,8 @@ $("#modal-5").fireModal({
                             response.msg +
                             "</div>"
                     );
+                location.reload();
                 updateStudentList(accessToken);
-
                 // Close the modal (Optional)
                 modal.modal("hide");
             },
@@ -181,10 +234,10 @@ function updateStudentList(accessToken) {
             paginationContainer.html(
                 $(data).find("#pagination-container").html()
             );
+            console.log("Clearing input fields...");
             $("#first_name").val("");
             $("#last_name").val("");
             $("#middle_name").val("");
-            location.reload();
         },
         error: function (error) {
             console.error("Error fetching student list:", error);

@@ -14,7 +14,6 @@ $(document).ready(function () {
     });
 
     $("#update-student").on("click", ".btn-primary", function () {
-        
         // Gather data from input fields
         var id = $("#id").val();
         var student_id = $("#edit_studentid").val();
@@ -32,7 +31,7 @@ $(document).ready(function () {
             middle_name: middleName,
             _token: csrfToken,
         };
-  
+
         updateStudent(formData);
         console.log(formData, csrfToken);
         // Perform AJAX request to update student details
@@ -78,7 +77,6 @@ $(document).ready(function () {
             data: formData,
             success: function (data) {
                 window.location.href = "/";
-                
             },
         });
     });
@@ -87,23 +85,23 @@ $(document).ready(function () {
         e.preventDefault();
 
         $("#attendance_student_id").val($(this).data("student-id"));
-
     });
 
     $("#attendance-button").on("click", function (e) {
         e.preventDefault();
         var accessToken = localStorage.getItem("access_token");
         var csrfToken = $('meta[name="csrf-token"]').attr("content");
-        console.log($('#attendance_student_id').val());
+        console.log($("#attendance_student_id").val());
         const formData = {
-            student_id: $('#attendance_student_id').val(),
-            attendance_type: $('#attendance_type').val(),
-            attendance_date: $('#attendance_date').val(),
-            attendance_time: $('#attendance_time').val(),
-            attendance_demerit: $('#attendance_demerit').val(),
-            attendance_merit: $('#attendance_demerit').val()
+            description: $("#description").val(),
+            student_id: $("#attendance_student_id").val(),
+            attendance_type: $("#attendance_type").val(),
+            attendance_date: $("#attendance_date").val(),
+            attendance_time: $("#attendance_time").val(),
+            attendance_demerit: $("#attendance_demerit").val(),
+            attendance_merit: $("#attendance_demerit").val(),
         };
-        console.log(formData)
+        console.log(formData);
         $.ajax({
             type: "POST",
             url: "attendance-student-manual",
@@ -115,7 +113,6 @@ $(document).ready(function () {
             success: function (data) {
                 console.log(data);
                 location.reload();
-                
             },
         });
     });
@@ -212,7 +209,7 @@ function updateStudentList() {
             paginationContainer.html(
                 $(data).find("#pagination-container").html()
             );
-            
+
             $("#first_name").val("");
             $("#last_name").val("");
             $("#middle_name").val("");

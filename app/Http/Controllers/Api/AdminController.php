@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
-use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use function Laravel\Prompts\table;
 
@@ -113,7 +113,7 @@ class AdminController extends Controller
 
     public function attendanceCheck(Request $request)
     {
-   
+
         try {
             foreach ($request->attendance_date as $attendance) {
                 Attendance::create([
@@ -131,27 +131,44 @@ class AdminController extends Controller
         }
     }
 
-    public function allStudentReportByDate($date){
-        try {
-            $report = DB::table('attendances')
-                            ->join('students', 'attendances.student_id', 'students.id')
-                            ->select('students.*', 'attendances.date', 'attendances.time')
-                            ->where('')
-                            ->orderBy('attendances.date', 'ASC')
-                            ->get();
-        } catch (ModelNotFoundException $e) {
-            return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
-        } catch (\Exception $e) {
-            return response(['error' => 'An error occurred', 'msg' => $e->getMessage()], 500);
+    public function indexReportStudentByDate()
+    {
+        return view('pdf.report_date');
+    }
+    public function allStudentReportByDate(Request $request)
+    {
+        if (Auth::check()) {
+            try {
+                $report = DB::table('attendances')
+                    ->join('students', 'attendances.student_id', 'students.id')
+                    ->select('attendances.*', 'students.id as system_id', 'students.first_name', 'students.last_name', 'students.middle_name')
+                    ->where('attendances.date', $request->date)
+                    ->orderBy('attendances.date', 'ASC')
+                    ->get();
+
+                $dataArray = $report->toArray();
+                $pdf = new PDF();
+                $pdf = PDF::LoadView('pdf.report_date', ['data' => $dataArray]);
+                return $pdf->download('student_report_by_data.pdf');
+                // return $report;
+            } catch (ModelNotFoundException $e) {
+                return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
+            } catch (\Exception $e) {
+                return response(['error' => 'An error occurred', 'msg' => $e->getMessage()], 500);
+            }
         }
+
+        // User is not authenticated, redirect to login page
+        return redirect()->route('auth.login');
     }
 
-    public function checkAttendance(Request $request){
+    public function checkAttendance(Request $request)
+    {
         try {
 
             $demerit = 0;
             $merit = 0;
-           
+
 
             if (!empty($request->attendance_demerit)) {
                 $demerit = 1;
@@ -161,12 +178,17 @@ class AdminController extends Controller
                 $merit = 1;
             }
 
+
+
             if ($request->attendance_type === "0") {  //absent
                 Attendance::create([
+                    'description' => $request->description,
+                    'is_present' => false,
                     'student_id' => $request->student_id,
                     'date' => $request->attendance_date,
                     'time' => $request->attendance_time,
-                    'is_absent' => 1,
+                    'is_absent' => true,
+                    'is_late' => false,
                     'demerit' => $demerit,
                     'demerit_remarks' => $request->attendance_demerit,
                     'merit' => $merit,
@@ -178,10 +200,13 @@ class AdminController extends Controller
 
             if ($request->attendance_type === "1") { //present
                 Attendance::create([
+                    'description' => $request->description,
                     'is_present' => true,
                     'student_id' => $request->student_id,
                     'date' => $request->attendance_date,
                     'time' => $request->attendance_time,
+                    'is_absent' => false,
+                    'is_late' => false,
                     'demerit' => $demerit,
                     'demerit_remarks' => $request->attendance_demerit,
                     'merit' => $merit,
@@ -191,12 +216,15 @@ class AdminController extends Controller
                 return response(['msg' => "Attendance Checked"], 200);
             }
 
-            if ($request->attendance_type === "2") { //Absent
+            if ($request->attendance_type === "2") { //late
                 Attendance::create([
-                    'is_absent' => true,
+                    'description' => $request->description,
+                    'is_present' => false,
                     'student_id' => $request->student_id,
                     'date' => $request->attendance_date,
                     'time' => $request->attendance_time,
+                    'is_absent' => false,
+                    'is_late' => true,
                     'demerit' => $demerit,
                     'demerit_remarks' => $request->attendance_demerit,
                     'merit' => $merit,
@@ -204,10 +232,7 @@ class AdminController extends Controller
                 ]);
 
                 return response(['msg' => "Attendance Checked"], 200);
-                
             }
-
-           
         } catch (ModelNotFoundException $e) {
             return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
         } catch (\Exception $e) {

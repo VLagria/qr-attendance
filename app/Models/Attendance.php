@@ -10,9 +10,16 @@ class Attendance extends Model
     use HasFactory;
 
     protected $fillable = [
+        'description',
         'is_present',
         'student_id',
         'date',
-        'time'
+        'time',
+        'is_absent',
+        'is_late',
+        'demerit',
+        'demerit_remarks',
+        'merit',
+        'merit_remarks'
     ];
 }

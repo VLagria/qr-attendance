@@ -141,7 +141,7 @@ class AdminController extends Controller
             try {
                 $report = DB::table('attendances')
                     ->join('students', 'attendances.student_id', 'students.id')
-                    ->select('attendances.*', 'students.id as system_id', 'students.first_name', 'students.last_name', 'students.middle_name')
+                    ->select('attendances.*', 'students.student_id as display_id', 'students.first_name', 'students.last_name', 'students.middle_name')
                     ->where('attendances.date', $request->date)
                     ->orderBy('attendances.date', 'ASC')
                     ->get();
@@ -192,7 +192,7 @@ class AdminController extends Controller
                     'demerit' => $demerit,
                     'demerit_remarks' => $request->attendance_demerit,
                     'merit' => $merit,
-                    'merit_remarks' => $request->attendance_demerit
+                    'merit_remarks' => $request->attendance_merit
                 ]);
 
                 return response(['msg' => "Attendance Checked"], 200);
@@ -210,7 +210,7 @@ class AdminController extends Controller
                     'demerit' => $demerit,
                     'demerit_remarks' => $request->attendance_demerit,
                     'merit' => $merit,
-                    'merit_remarks' => $request->attendance_demerit
+                    'merit_remarks' => $request->attendance_merit
                 ]);
 
                 return response(['msg' => "Attendance Checked"], 200);
@@ -228,7 +228,7 @@ class AdminController extends Controller
                     'demerit' => $demerit,
                     'demerit_remarks' => $request->attendance_demerit,
                     'merit' => $merit,
-                    'merit_remarks' => $request->attendance_demerit
+                    'merit_remarks' => $request->attendance_merit
                 ]);
 
                 return response(['msg' => "Attendance Checked"], 200);

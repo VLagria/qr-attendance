@@ -11,8 +11,9 @@
                 data-target="#show-qr" data-student-id="{{ $value->id }}"><i class="fas fa-info-circle"></i>
                 Info</a>
             <a href="#" class="btn btn-icon icon-left btn-warning student-attendance" data-toggle="modal"
-                data-target="#attendance-modal" data-student-id="{{ $value->id }}"><i class="fas fa-exclamation-triangle"></i>
-                Check</a>
+                data-target="#attendance-modal" data-student-id="{{ $value->id }}"><i
+                    class="fas fa-exclamation-triangle"></i>
+                Logs</a>
         </td>
         {{-- <td>
                                                             <div class="badge badge-success">Active</div>

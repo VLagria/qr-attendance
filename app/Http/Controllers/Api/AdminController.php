@@ -158,7 +158,41 @@ class AdminController extends Controller
             }
         }
 
-        // User is not authenticated, redirect to login page
+        return redirect()->route('auth.login');
+    }
+
+    public function getStudentReportByMonth(Request $request)
+    {
+        if (Auth::check()) {
+            try {
+                $month = $request->month;
+                $report = DB::table('attendances')
+                    ->join('students', 'attendances.student_id', 'students.id')
+                    ->select('attendances.*', 'students.student_id as display_id', 'students.first_name', 'students.last_name', 'students.middle_name')
+                    ->whereRaw("SUBSTRING(attendances.date, 1, 7) = ?", [$month])
+                    ->orderBy('attendances.date', 'ASC')
+                    ->get();
+                $organizedData = [];
+                foreach ($report as $item) {
+                    $date = $item->date;
+                    if (!isset($organizedData[$date])) {
+                        $organizedData[$date] = [];
+                    }
+                    $organizedData[$date][] = $item;
+                }
+
+                $dataArray = $organizedData;
+                $pdf = new PDF();
+                $pdf = PDF::LoadView('pdf.report_month', ['data' => $dataArray]);
+                return $pdf->download('student_report_by_data.pdf');
+                // return $report;
+            } catch (ModelNotFoundException $e) {
+                return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
+            } catch (\Exception $e) {
+                return response(['error' => 'An error occurred', 'msg' => $e->getMessage()], 500);
+            }
+        }
+
         return redirect()->route('auth.login');
     }
 

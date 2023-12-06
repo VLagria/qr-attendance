@@ -21,6 +21,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::get('/', [AuthController::class, 'showLogin'])->name('auth.login');
     Route::middleware('auth')->get('admin-dashboard', [AdminController::class, 'showDashboard'])->name('admin.dashboard');
     Route::middleware('auth')->post('student-report-by-date', [AdminController::class, 'allStudentReportByDate'])->name('student.reportbydate');
+    Route::middleware('auth')->post('student-report-by-month', [AdminController::class, 'getStudentReportByMonth'])->name('student.reportbymonth');
     Route::post('check-attendance', [AdminController::class, 'attendanceCheck']);
     Route::middleware('auth:api')->group(function () {
         Route::post('add-students', [AdminController::class, 'registerStudent']);

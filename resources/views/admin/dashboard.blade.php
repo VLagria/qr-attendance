@@ -306,24 +306,44 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form method="POST" action="{{ route('student.reportbydate') }}"
-                                        target="_blank">
-                                        @csrf
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <label>Date</label>
-                                                <input type="date" name="date" id="date"
-                                                    class="form-control">
-                                            </div>
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <form method="POST" action="{{ route('student.reportbydate') }}"
+                                                target="_blank">
+                                                @csrf
+                                                <label>Generate student report by date</label>
+                                                <div class="input-group mb-3">
+                                                    <input type="date" name="date" id="date"
+                                                        class="form-control">
+                                                    <div class="input-group-append">
+                                                        <button type="submit" class="btn btn-primary">Generate
+                                                            Report</button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Generate
-                                                QR
-                                                Code</button>
+                                        <div class="form-group">
+                                            <form method="POST" action="{{ route('student.reportbymonth') }}"
+                                                target="_blank">
+                                                @csrf
+                                                <label>Generate student report by month</label>
+                                                <div class="input-group mb-3">
+                                                    <input type="month" name="month" id="month"
+                                                        class="form-control">
+                                                    <div class="input-group-append">
+                                                        <button type="submit" class="btn btn-primary">Generate
+                                                            Report</button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
-                                    </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

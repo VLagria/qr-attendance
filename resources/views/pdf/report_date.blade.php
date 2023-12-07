@@ -3,7 +3,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Blade</title>
+    <title>Student Report By Day</title>
     <!-- General CSS Files -->
     <link rel="stylesheet" href="assets/modules/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/modules/fontawesome/css/all.min.css">
@@ -12,17 +12,6 @@
 
     <div class="card">
         <div class="card-header">
-           {{-- <div class="container">
-            <div class="left-image">
-                <img src="{{ public_path('assets/img/hcdc-logo.png') }}" alt="Your Image">
-            </div>
-            <div class="center-content">
-                fasdsadsa
-            </div>
-            <div class="right-image">
-                <img src="{{ public_path('assets/img/hcdc-logo.png') }}" alt="Your Image">
-            </div>
-           </div> --}}
            <table>
             <thead>
                 <tr>
@@ -44,6 +33,7 @@
           </div>
         </div>
         <div class="card-body">
+          <p style="font-size: 10px;"><strong>Date: {{ date("F-d-Y") }}</strong></p>
           <table class="table" style="font-size: 10px;">
             <thead>
               <tr>

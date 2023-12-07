@@ -156,8 +156,8 @@ $("#modal-5").fireModal({
         let form_data = $(e.target).serialize();
         var accessToken = localStorage.getItem("access_token");
         var csrfToken = $('meta[name="csrf-token"]').attr("content");
-        console.log(accessToken);
-        // DO AJAX HERE
+        console.log(form_data);
+        
         $.ajax({
             type: "POST",
             url: "add-students", // Replace with the actual URL

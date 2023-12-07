@@ -4,6 +4,7 @@
         <td hidden id="stud-id">{{ $value->id }}</td>
         <td>{{ $value->student_id }}</td>
         <td>{{ $value->first_name }} {{ $value->middle_name }} {{ $value->last_name }}</td>
+        <td>{{ $value->year_lvl }}</td>
         <td> <a href="#" class="btn btn-icon icon-left btn-primary update-student" data-toggle="modal"
                 data-target="#update-student" data-student-id="{{ $value->id }}"><i class="far fa-edit"></i>
                 Edit</a>
@@ -15,9 +16,5 @@
                     class="fas fa-exclamation-triangle"></i>
                 Logs</a>
         </td>
-        {{-- <td>
-                                                            <div class="badge badge-success">Active</div>
-                                                        </td>
-                                                        <td><a href="#" class="btn btn-secondary">Detail</a></td> --}}
     </tr>
 @endforeach

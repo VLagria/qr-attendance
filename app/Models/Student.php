@@ -13,6 +13,7 @@ class Student extends Model
         'first_name',
         'last_name',
         'middle_name',
-        'student_id'
+        'student_id',
+        'year_lvl'
     ];
 }

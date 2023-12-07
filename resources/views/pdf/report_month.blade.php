@@ -3,14 +3,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>Blade</title>
+<title>Student Report By Month</title>
 <!-- General CSS Files -->
 <link rel="stylesheet" href="assets/modules/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/modules/fontawesome/css/all.min.css">
 <!-- Template CSS -->
 <link rel="stylesheet" href="assets/css/style.css">
 
-<div class="card">
+<div class="card" style="margin-bottom: -40px">
     <div class="card-header">
         <table>
             <thead>
@@ -38,9 +38,12 @@
         </table>
     </div>
 </div>
-<div class="card-body">
+<div class="card-body" style="margin-bottom: -40px">
     @foreach ($data as $date => $students)
-        <p style="font-size: 10px"><strong>{{ $date }}</strong></p>
+        @php
+            $month = date('F', strtotime($date));
+        @endphp
+        <p style="font-size: 10px;"><strong>{{ $month }}</strong></p>
         <table class="table" style="font-size: 10px;">
             <thead>
                 <tr>

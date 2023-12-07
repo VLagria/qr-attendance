@@ -17,6 +17,7 @@ $(document).ready(function () {
         // Gather data from input fields
         var id = $("#id").val();
         var student_id = $("#edit_studentid").val();
+        var year_level = $('#edit_year_level').val();
         var firstName = $("#edit_fname").val();
         var lastName = $("#edit_lname").val();
         var middleName = $("#edit_mname").val();
@@ -25,6 +26,7 @@ $(document).ready(function () {
         var csrfToken = $('meta[name="csrf-token"]').attr("content");
         const formData = {
             id: id,
+            year_level: year_level,
             student_id: student_id,
             first_name: firstName,
             last_name: lastName,
@@ -156,6 +158,7 @@ function displayStudentDetail(studentId) {
         success: function (response) {
             console.log(response.data.first_name);
             $("#edit_studentid").val(response.data.student_id);
+            $("#edit_year_level").val(response.data.year_lvl);
             $("#edit_fname").val(response.data.first_name);
             $("#edit_lname").val(response.data.last_name);
             $("#edit_mname").val(response.data.middle_name);

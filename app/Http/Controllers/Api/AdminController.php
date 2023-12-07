@@ -60,13 +60,15 @@ class AdminController extends Controller
                 'last_name' => 'required',
                 'middle_name' => 'required',
                 'student_id' => 'required',
+                'year_level' => 'required'
             ]);
 
             Student::create([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'middle_name' => $request->middle_name,
-                'student_id' => $request->student_id
+                'student_id' => $request->student_id,
+                'year_lvl' => $request->year_level
             ]);
             return response(['msg', 'Student registered successfully'], 200);
         } catch (ValidationException $e) {
@@ -101,7 +103,8 @@ class AdminController extends Controller
                 'student_id' => $request->student_id,
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
-                'middle_name' => $request->middle_name
+                'middle_name' => $request->middle_name,
+                'year_lvl' => $request->year_level
             ]);
             return response(['msg' => "Student updated successfully"], 200);
         } catch (ValidationException $e) {
@@ -149,7 +152,7 @@ class AdminController extends Controller
                 $dataArray = $report->toArray();
                 $pdf = new PDF();
                 $pdf = PDF::LoadView('pdf.report_date', ['data' => $dataArray]);
-                return $pdf->download('student_report_by_data.pdf');
+                return $pdf->download('student_report_by_date.pdf');
                 // return $report;
             } catch (ModelNotFoundException $e) {
                 return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
@@ -167,24 +170,24 @@ class AdminController extends Controller
             try {
                 $month = $request->month;
                 $report = DB::table('attendances')
-                    ->join('students', 'attendances.student_id', 'students.id')
-                    ->select('attendances.*', 'students.student_id as display_id', 'students.first_name', 'students.last_name', 'students.middle_name')
-                    ->whereRaw("SUBSTRING(attendances.date, 1, 7) = ?", [$month])
-                    ->orderBy('attendances.date', 'ASC')
-                    ->get();
+                            ->join('students', 'attendances.student_id', 'students.id')
+                            ->select('attendances.*', 'students.student_id as display_id', 'students.first_name', 'students.last_name', 'students.middle_name')
+                            ->whereRaw("DATE_FORMAT(attendances.date, '%Y-%m') = ?", [$month])
+                            ->orderBy('attendances.date', 'ASC')
+                            ->get();
                 $organizedData = [];
                 foreach ($report as $item) {
-                    $date = $item->date;
-                    if (!isset($organizedData[$date])) {
-                        $organizedData[$date] = [];
+                    $yearMonth = date('Y-m', strtotime($item->date));
+                    if (!isset($organizedData[$yearMonth])) {
+                        $organizedData[$yearMonth] = [];
                     }
-                    $organizedData[$date][] = $item;
+                    $organizedData[$yearMonth][] = $item;
                 }
-
+            
                 $dataArray = $organizedData;
                 $pdf = new PDF();
                 $pdf = PDF::LoadView('pdf.report_month', ['data' => $dataArray]);
-                return $pdf->download('student_report_by_data.pdf');
+                return $pdf->download('student_report_by_month.pdf');
                 // return $report;
             } catch (ModelNotFoundException $e) {
                 return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);

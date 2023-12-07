@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\QrGeneratorController;
+use App\Http\Controllers\Api\ReceiptController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +25,13 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::middleware('auth')->post('student-report-by-date', [AdminController::class, 'allStudentReportByDate'])->name('student.reportbydate');
     Route::middleware('auth')->post('student-report-by-month', [AdminController::class, 'getStudentReportByMonth'])->name('student.reportbymonth');
     Route::post('check-attendance', [AdminController::class, 'attendanceCheck']);
+
+    Route::get('school-activity-receipt', [ReceiptController::class, 'schoolActivityReceipt']);
+    Route::get('monthly-formation-receipt', [ReceiptController::class, 'monthlyFormationReceipt']);
+    Route::get('merit-receipt', [ReceiptController::class, 'meritReceipt']);
+    Route::get('demerit-receipt', [ReceiptController::class, 'demeritReceipt']);
+
+
     Route::middleware('auth:api')->group(function () {
         Route::post('add-students', [AdminController::class, 'registerStudent']);
         Route::get('generate-qrcode/{id}', [QrGeneratorController::class, 'generateQrCode']);

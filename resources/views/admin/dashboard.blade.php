@@ -117,6 +117,7 @@
                                             <tr>
                                                 <th>Student ID#</th>
                                                 <th>Name</th>
+                                                <th>Year Level</th>
                                                 <th style="width: 300px">Action</th>
                                             </tr>
                                             <tbody id="student-list-container">
@@ -145,10 +146,21 @@
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                    <i class="fas fa-lock"></i>
+                                    <i class="fas fa-list-ol"></i>
                                 </div>
                             </div>
                             <input type="student_id" class="form-control" placeholder="student id" name="student_id">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Year Level</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-hashtag"></i>
+                                </div>
+                            </div>
+                            <input type="year_level" class="form-control" placeholder="Year level" name="year_level">
                         </div>
                     </div>
                     <div class="form-group">
@@ -207,11 +219,22 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
-                                                <i class="fas fa-user"></i>
+                                                <i class="fas fa-list-ol"></i>
                                             </div>
                                         </div>
                                         <input type="text" class="form-control" placeholder="Student id"
                                             name="edit_studentid" id="edit_studentid">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Year Level</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fas fa-hashtag"></i>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" placeholder="Year level" id="edit_year_level" name="edit_year_level">
                                     </div>
                                 </div>
                                 <div class="form-group">

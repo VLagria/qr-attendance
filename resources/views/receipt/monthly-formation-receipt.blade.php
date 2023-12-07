@@ -78,6 +78,23 @@
                 margin-bottom: 10px;
             }
         }
+        @media print {
+            body {
+                background-color: #fff; /* White background for printing */
+            }
+
+            .card {
+                box-shadow: none; /* Remove box shadow for printing */
+                border: 1px solid #ddd; /* Add a border for better separation */
+                margin: 0; /* Remove margin for printing */
+            }
+
+            .card-body {
+                padding: 10px; /* Adjust padding for printing */
+            }
+
+            /* Add any additional styles for printing as needed */
+        }
     </style>
 </head>
 <body>

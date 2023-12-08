@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Attendance Receipt</title>
 
     <style>
         body {
@@ -100,16 +100,22 @@
             </div>
         </div>
         <div class="content-body">
-            <p><strong>Student ID:</strong> 123456</p>
-            <p><strong>Name:</strong> John Doe</p>
-            <p><strong>Year Level:</strong> 3rd Year</p>
-            <p><strong>Date:</strong> December 7, 2023</p>
-            <p><strong>Time:</strong> 10:00 AM</p>
+            <p><strong>Student ID:</strong> {{ $attendance->student_id }}</p>
+            <p><strong>Name:</strong> {{ $attendance->last_name }}, {{ $attendance->first_name }} {{ $attendance->middle_name }}</p>
+            <p><strong>Year Level:</strong> {{ $attendance->year_level }}</p>
+            <p><strong>Date:</strong> {{ $attendance->date }}</p>
+            <p><strong>Time:</strong> {{ date("h:i A", strtotime($attendance->time)) }}</p>
         </div>
     </div>
     <div class="footer">
-        <p><strong>MONTHLY FORMATION</strong></p>
-        <p>Remarks: Present/Late</p>
+        <p><strong>{{ $attendance->description }}</strong></p>
+        @if ($attendance->is_absent === 1)
+            <p>Remarks: Absent</p>
+        @elseif ($attendance->is_present === 1)
+            <p>Remarks: Present</p>
+        @elseif ($attendance->is_late === 1)
+             <p>Remarks: Late</p>
+        @endif
         <br>
         <p>Arvin V. Timbang, MSCRIM</p>
         <p>CJE Program Chairperson</p>

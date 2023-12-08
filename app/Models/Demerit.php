@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Demerit extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'student_id',
+        'points',
+        'description',
+        'date',
+        'time',
+        'previous_points'
+    ];
 }

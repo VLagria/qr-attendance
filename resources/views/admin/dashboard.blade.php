@@ -118,7 +118,7 @@
                                                 <th>Student ID#</th>
                                                 <th>Name</th>
                                                 <th>Year Level</th>
-                                                <th style="width: 300px">Action</th>
+                                                <th style="width: 400px">Action</th>
                                             </tr>
                                             <tbody id="student-list-container">
 
@@ -383,54 +383,101 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <div class="modal-body">
-                                            <input type="hidden" id="attendance_student_id">
-                                            <div class="form-group">
-                                                <label>Description</label>
-                                                <select class="form-control" id="description" name="description">
-                                                    <option value="Monthly Formation">Monthly Formation</option>
-                                                    <option value="School Activity">School Activity</option>
-                                                </select>
+                                        <form>
+                                            @csrf
+                                            <div class="modal-body">
+                                                <input type="hidden" id="attendance_student_id" name="attendance_student_id">
+                                                <div class="form-group">
+                                                    <label>Description</label>
+                                                    <select class="form-control" id="description" name="description">
+                                                        <option value="Monthly Formation">Monthly Formation</option>
+                                                        <option value="School Activity">School Activity</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Date</label>
+                                                    <input type="date" name="attendance_date" id="attendance_date"
+                                                        class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Datetime Local</label>
+                                                    <input type="time" class="form-control" name="attendance_time"
+                                                        id="attendance_time">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Attendance</label>
+                                                    <select class="form-control" id="attendance_type"
+                                                        name="attendance_type">
+                                                        <option value="1">Present</option>
+                                                        <option value="2">Late</option>
+                                                        <option value="0">Absent</option>
+                                                    </select>
+                                                </div>
+                                           
                                             </div>
-                                            <div class="form-group">
-                                                <label>Date</label>
-                                                <input type="date" name="attendance_date" id="attendance_date"
-                                                    class="form-control">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Datetime Local</label>
-                                                <input type="time" class="form-control" name="attendance_time"
-                                                    id="attendance_time">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Attendance</label>
-                                                <select class="form-control" id="attendance_type"
-                                                    name="attendance_type">
-                                                    <option value="1">Present</option>
-                                                    <option value="2">Late</option>
-                                                    <option value="0">Absent</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Demerit</label>
-                                                <input type="text" class="form-control" id="attendance_demerit"
-                                                    placeholder="Enter demerit">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Merit</label>
-                                                <input type="text" class="form-control" id="attendance_merit"
-                                                    placeholder="Enter merit">
-                                            </div>
-                                        </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-dismiss="modal">Close</button>
                                             <button type="button" class="btn btn-primary"
                                                 id="attendance-button">Attendance</button>
                                         </div>
+                                    </form>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="modal fade" id="grade-modal" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Merit / Demerit</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <input type="hidden" id="grade_student_id" name="grade_student_id">
+                                                <div class="form-group">
+                                                    <label>Type</label>
+                                                    <select class="form-control" id="grade_type" name="grade_type">
+                                                        <option value="Demerit">Demerit</option>
+                                                        <option value="Merit">Merit</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Date</label>
+                                                    <input type="date" name="grade_date" id="grade_date"
+                                                        class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Datetime Local</label>
+                                                    <input type="time" class="form-control" name="grade_time"
+                                                        id="grade_time">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Descriptions</label>
+                                                    <input type="text" class="form-control" name="grade_descriptions" placeholder="Enter Violation"
+                                                        id="grade_descriptions">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Points</label>
+                                                    <input type="number" class="form-control" name="points" placeholder="Enter points"
+                                                        id="points">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary"
+                                                id="grade-button">Attendance</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </di>
 
         </div>
         <footer class="main-footer">
@@ -443,6 +490,7 @@
         </footer>
     </div>
     </div>
+
 
     <!-- General JS Scripts -->
     <script src="assets/modules/jquery.min.js"></script>

@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('merits', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('student_id');
+            $table->integer('points');
+            $table->string('description');
+            $table->date('date');
+            $table->string('time');
+            $table->integer('previous_points')->nullable();
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->timestamps();
         });
     }

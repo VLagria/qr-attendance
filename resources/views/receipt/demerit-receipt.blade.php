@@ -100,16 +100,16 @@
             </div>
         </div>
         <div class="content-body">
-            <p><strong>Student ID:</strong> 123456</p>
-            <p><strong>Name:</strong> John Doe</p>
-            <p><strong>Year Level:</strong> 3rd Year</p>
-            <p><strong>Date:</strong> December 7, 2023</p>
-            <p><strong>Time:</strong> 10:00 AM</p>
+            <p><strong>Student ID:</strong> {{ $demerit->display_id }}</p>
+            <p><strong>Name:</strong> {{ $demerit->last_name }}, {{ $demerit->first_name }} {{ $demerit->middle_name }}</p>
+            <p><strong>Year Level:</strong> {{ $demerit->year_level }}</p>
+            <p><strong>Date:</strong> {{ $demerit->date }}</p>
+            <p><strong>Time:</strong> {{ date("h:i A", strtotime($demerit->time)) }}</p>
         </div>
     </div>
     <div class="footer">
         <p><strong>DEMERITS</strong></p>
-        <p>IMPROPER TUCK IN / MUSTACHE / NOT WEARKING PRESCRIBED UNIFORM</p>
+        <p>{{ $demerit->description }}</p>
     </div>
 </body>
 

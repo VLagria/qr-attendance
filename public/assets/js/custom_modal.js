@@ -89,6 +89,12 @@ $(document).ready(function () {
         $("#attendance_student_id").val($(this).data("student-id"));
     });
 
+    $(".grade-attendance").on("click", function (e) {
+        e.preventDefault();
+
+        $("#grade_student_id").val($(this).data("student-id"));
+    });
+
     $("#attendance-button").on("click", function (e) {
         e.preventDefault();
         var accessToken = localStorage.getItem("access_token");
@@ -100,8 +106,6 @@ $(document).ready(function () {
             attendance_type: $("#attendance_type").val(),
             attendance_date: $("#attendance_date").val(),
             attendance_time: $("#attendance_time").val(),
-            attendance_demerit: $("#attendance_demerit").val(),
-            attendance_merit: $("#attendance_demerit").val(),
         };
         console.log(formData);
         $.ajax({
@@ -113,8 +117,47 @@ $(document).ready(function () {
             },
             data: formData,
             success: function (data) {
-                console.log(data);
-                location.reload();
+                if (data.url) {
+                    // Redirect to the receipt blade with the ID parameter
+                    window.open(data.url, '_blank');
+                    location.reload();
+                } else {
+                    console.error('Invalid response data:', data);
+                }
+            },
+        });
+    });
+
+    $("#grade-button").on("click", function (e) {
+        e.preventDefault();
+        var accessToken = localStorage.getItem("access_token");
+        var csrfToken = $('meta[name="csrf-token"]').attr("content");
+        console.log($("#grade_student_id").val());
+        const formData = {
+            grade_type: $("#grade_type").val(),
+            grade_descriptions: $("#grade_descriptions").val(),
+            student_id: $("#grade_student_id").val(),
+            points: $("#points").val(),
+            grade_date: $("#grade_date").val(),
+            grade_time: $("#grade_time").val(),
+        };
+        console.log(formData);
+        $.ajax({
+            type: "POST",
+            url: "performance-student-manual",
+            headers: {
+                "X-CSRF-TOKEN": csrfToken,
+                Authorization: "Bearer " + accessToken,
+            },
+            data: formData,
+            success: function (data) {
+                if (data.url) {
+                    // Redirect to the receipt blade with the ID parameter
+                    window.open(data.url, '_blank');
+                    location.reload();
+                } else {
+                    console.error('Invalid response data:', data);
+                }
             },
         });
     });

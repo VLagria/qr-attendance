@@ -24,14 +24,21 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::middleware('auth')->get('admin-dashboard', [AdminController::class, 'showDashboard'])->name('admin.dashboard');
     Route::middleware('auth')->post('student-report-by-date', [AdminController::class, 'allStudentReportByDate'])->name('student.reportbydate');
     Route::middleware('auth')->post('student-report-by-month', [AdminController::class, 'getStudentReportByMonth'])->name('student.reportbymonth');
+    Route::middleware('auth')->get('grade-system', [AdminController::class, 'gradeSystem'])->name('grade.system');
+    
     Route::post('check-attendance', [AdminController::class, 'attendanceCheck']);
 
     Route::get('school-activity-receipt', [ReceiptController::class, 'schoolActivityReceipt']);
-    Route::get('monthly-formation-receipt', [ReceiptController::class, 'monthlyFormationReceipt']);
-    Route::get('merit-receipt', [ReceiptController::class, 'meritReceipt']);
-    Route::get('demerit-receipt', [ReceiptController::class, 'demeritReceipt']);
+    Route::get('monthly-formation-receipt/{id}', [ReceiptController::class, 'monthlyFormationReceipt'])->name('monthly.receipt');
+    Route::get('merit-receipt/{id}', [ReceiptController::class, 'meritReceipt'])->name('merit.receipt');
+    Route::get('demerit-receipt/{id}', [ReceiptController::class, 'demeritReceipt'])->name('demerit.receipt');
 
+    Route::post('attendance-student-manual', [AdminController::class, 'checkAttendance'])->name('check.attendance');
+    Route::post('performance-student-manual', [AdminController::class, 'gradeSystem'])->name('check.attendance');
 
+    Route::post('grade-student-sync', [AdminController::class, 'gradeSystemSync'])->name('grade.sync');
+    Route::post('attendance-student-sync', [AdminController::class, 'attendanceSync'])->name('attendance.sync');
+    
     Route::middleware('auth:api')->group(function () {
         Route::post('add-students', [AdminController::class, 'registerStudent']);
         Route::get('generate-qrcode/{id}', [QrGeneratorController::class, 'generateQrCode']);
@@ -39,7 +46,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
         Route::get('search-student/{query}', [AdminController::class, 'search']);
         Route::post('update-student', [AdminController::class, 'updateStudent']);
         Route::get('get-student-list', [AdminController::class, 'getStudentList']);
-        Route::post('attendance-student-manual', [AdminController::class, 'checkAttendance']);
+        // Route::post('attendance-student-manual', [AdminController::class, 'checkAttendance']);
         // our routes to be protected will go in here
     });
 });

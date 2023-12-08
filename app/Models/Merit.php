@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Merit extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'student_id',
+        'points',
+        'description',
+        'date',
+        'time',
+        'previous_points'
+    ];
 }

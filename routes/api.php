@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\SyncController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -18,5 +18,9 @@ use App\Http\Controllers\Api\AuthController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('attendance-check', [AuthController::class, 'attendanceCheck'])->name('attendance.check');
-Route::post('attendance-student-sync', [AdminController::class, 'attendanceSync'])->name('attendance.sync');
+// Route::post('attendance-check', [AuthController::class, 'attendanceCheck'])->name('attendance.check');
+// Route::post('attendance-student-sync', [AdminController::class, 'attendanceSync'])->name('attendance.sync');
+// Route::post('grade-student-sync', [AdminController::class, 'gradeSystemSync'])->name('grade.sync');
+
+Route::post('grade-student-sync', [SyncController::class, 'gradeSystemSync'])->name('grade.sync');
+Route::post('attendance-student-sync', [SyncController::class, 'attendanceSync'])->name('attendance.sync');

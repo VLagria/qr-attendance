@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
+use App\Models\Demerit;
+use App\Models\Merit;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,8 +13,10 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Svg\Tag\Rect;
 
 use function Laravel\Prompts\table;
+use function PHPUnit\Framework\isNull;
 
 class AdminController extends Controller
 {
@@ -30,7 +34,6 @@ class AdminController extends Controller
             return view('admin.dashboard', compact('students'));
         }
 
-        // User is not authenticated, redirect to login page
         return redirect()->route('auth.login');
     }
 
@@ -203,72 +206,55 @@ class AdminController extends Controller
     {
         try {
 
-            $demerit = 0;
-            $merit = 0;
-
-
-            if (!empty($request->attendance_demerit)) {
-                $demerit = 1;
-            }
-
-            if (!empty($request->attendance_merit)) {
-                $merit = 1;
-            }
-
-
-
             if ($request->attendance_type === "0") {  //absent
-                Attendance::create([
+                $attendance = Attendance::create([
                     'description' => $request->description,
                     'is_present' => false,
                     'student_id' => $request->student_id,
                     'date' => $request->attendance_date,
                     'time' => $request->attendance_time,
                     'is_absent' => true,
-                    'is_late' => false,
-                    'demerit' => $demerit,
-                    'demerit_remarks' => $request->attendance_demerit,
-                    'merit' => $merit,
-                    'merit_remarks' => $request->attendance_merit
+                    'is_late' => false
                 ]);
 
-                return response(['msg' => "Attendance Checked"], 200);
+                
+
+                $receiptUrl = route('monthly.receipt', ['id' => $attendance->id]);
+
+                return response(['msg' => 'Student present', 'url' => $receiptUrl], 200);
             }
 
             if ($request->attendance_type === "1") { //present
-                Attendance::create([
+                $attendance = Attendance::create([
                     'description' => $request->description,
                     'is_present' => true,
                     'student_id' => $request->student_id,
                     'date' => $request->attendance_date,
                     'time' => $request->attendance_time,
                     'is_absent' => false,
-                    'is_late' => false,
-                    'demerit' => $demerit,
-                    'demerit_remarks' => $request->attendance_demerit,
-                    'merit' => $merit,
-                    'merit_remarks' => $request->attendance_merit
+                    'is_late' => false
                 ]);
 
-                return response(['msg' => "Attendance Checked"], 200);
+                // Assuming you have a route named 'receipt.show', adjust it accordingly
+                $receiptUrl = route('monthly.receipt', ['id' => $attendance->id]);
+
+                return response(['msg' => 'Student present', 'url' => $receiptUrl], 200);
             }
 
             if ($request->attendance_type === "2") { //late
-                Attendance::create([
+                $attendance = Attendance::create([
                     'description' => $request->description,
                     'is_present' => false,
                     'student_id' => $request->student_id,
                     'date' => $request->attendance_date,
                     'time' => $request->attendance_time,
                     'is_absent' => false,
-                    'is_late' => true,
-                    'demerit' => $demerit,
-                    'demerit_remarks' => $request->attendance_demerit,
-                    'merit' => $merit,
-                    'merit_remarks' => $request->attendance_merit
+                    'is_late' => true
                 ]);
 
-                return response(['msg' => "Attendance Checked"], 200);
+                $receiptUrl = route('monthly.receipt', ['id' => $attendance->id]);
+
+                return response(['msg' => 'Student present', 'url' => $receiptUrl], 200);
             }
         } catch (ModelNotFoundException $e) {
             return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
@@ -277,12 +263,106 @@ class AdminController extends Controller
         }
     }
 
+    public function attendance_receipt($id){
+
+    }
+
+    public function gradeSystem(Request $request){
+        try {
+            // dd($request->all()); die();
+            if (Auth::check()) {
+                if ($request->grade_type === "Demerit") {  //Demerit
+                    $points = 0;
+                    $retrieve_current_points = DB::table('demerits')
+                                        ->where('student_id', $request->student_id)
+                                        ->where('demerits.id', 'DESC')
+                                        ->first();
+                    if (isNull($retrieve_current_points->previous_points) || $retrieve_current_points->previous_points === 0) {
+                        $points = $request->points;
+                    }else{
+                        $points = $request->points + $retrieve_current_points->previous_points;
+                    }
+                    
+                    $demerit = Demerit::create([
+                        'student_id' => $request->student_id,
+                        'points' => $request->points,
+                        'description' => $request->grade_descriptions,
+                        'date' => $request->grade_date,
+                        'time' => $request->grade_time,
+                        'previous_points' => $points
+                    ]);
+                    $receiptUrl = route('demerit.receipt', ['id' => $demerit->id]);
+
+                    return response(['msg' => 'Student present', 'url' => $receiptUrl], 200);
+                }
+                if ($request->grade_type === "Merit") {  //Merit
+
+                    $points = 0;
+                    $retrieve_current_points = DB::table('merits')
+                                        ->where('student_id', $request->student_id)
+                                        ->where('demerits.id', 'DESC')
+                                        ->first();
+                    if (isNull($retrieve_current_points->previous_points) || $retrieve_current_points->previous_points === 0) {
+                        $points = $request->points;
+                    }else{
+                        $points = $request->points + $retrieve_current_points->previous_points;
+                    }
+                    $merit = Merit::create([
+                        'student_id' => $request->student_id,
+                        'points' => $request->points,
+                        'description' => $request->grade_descriptions,
+                        'date' => $request->grade_date,
+                        'time' => $request->grade_time,
+                        'previous_points' => $points
+                    ]);
+
+                    $type = $request->grade_type;
+    
+                    $receiptUrl = route('merit.receipt', ['id' => $merit->id]);
+
+                    return response(['msg' => 'Student present', 'url' => $receiptUrl], 200);
+                }
+            }
+            return redirect()->route('auth.login');
+            
+        } catch (ModelNotFoundException $e) {
+            return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response(['error' => 'An error occurred', 'msg' => $e->getMessage()], 500);
+        }
+    }
+
+    public function gradeSystemSync(Request $request){
+        foreach ($request->students as  $student) {
+            # code...
+            if ($student->grade_type === "Demerit") {  //Demerit
+                Demerit::create([
+                    'student_id' => $student->student_id,
+                    'points' => $student->points,
+                    'descriptions' => $student->grade_descriptions,
+                    'date' => $student->grade_date,
+                    'time' => $student->grade_time
+                ]);
+            }
+            if ($student->grade_type === "Merit") {  //Merit
+                Merit::create([
+                    'student_id' => $student->student_id,
+                    'points' => $student->points,
+                    'descriptions' => $student->grade_descriptions,
+                    'date' => $student->grade_date,
+                    'time' => $student->grade_time
+                ]);
+            }
+        }
+    }
+
     public function attendanceSync(Request $request)
     {
+        return $request->all();
         try {
             $student_list = $request->students; //naa diri tanan students
             foreach ($student_list as $student) {
-                if ($student->attendance_type === "0") { //absent
+                if ($student->attendance_type === "0" || $student->attendance_type === 0) { //absent
                     Attendance::create([
                         'description' => $student->description,
                         'is_present' => false,
@@ -290,15 +370,11 @@ class AdminController extends Controller
                         'date' => $student->attendance_date,
                         'time' => $student->attendance_time,
                         'is_absent' => true,
-                        'is_late' => false,
-                        'demerit' => $student->demerit_points,
-                        'demerit_remarks' => $student->attendance_demerit,
-                        'merit' => $student->merit_points,
-                        'merit_remarks' => $student->attendance_merit
+                        'is_late' => false
                     ]);
                 }
 
-                if ($student->attendance_type === "1") { //present
+                if ($student->attendance_type === "1" || $student->attendance_type === 1) { //present
                     Attendance::create([
                         'description' => $student->description,
                         'is_present' => true,
@@ -306,15 +382,11 @@ class AdminController extends Controller
                         'date' => $student->attendance_date,
                         'time' => $student->attendance_time,
                         'is_absent' => false,
-                        'is_late' => false,
-                        'demerit' => $student->demerit_points,
-                        'demerit_remarks' => $request->attendance_demerit,
-                        'merit' => $student->merit_points,
-                        'merit_remarks' => $student->attendance_merit
+                        'is_late' => false
                     ]);
                 }
 
-                if ($student->attendance_type === "2") { //late
+                if ($student->attendance_type === "2" || $student->attendance_type === 2) { //late
                     Attendance::create([
                         'description' => $student->description,
                         'is_present' => false,
@@ -322,16 +394,11 @@ class AdminController extends Controller
                         'date' => $student->attendance_date,
                         'time' => $student->attendance_time,
                         'is_absent' => false,
-                        'is_late' => true,
-                        'demerit' => $student->demerit_points,
-                        'demerit_remarks' => $student->attendance_demerit,
-                        'merit' => $student->merit_points,
-                        'merit_remarks' => $student->attendance_merit
+                        'is_late' => true
                     ]);
-                }
-
-                return response(['msg' => "Attendance Sync Successfully"], 200);
+                }  
             }
+            return response(['msg' => "Attendance Sync Successfully"], 200);
         } catch (ModelNotFoundException $e) {
             return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
         } catch (\Exception $e) {

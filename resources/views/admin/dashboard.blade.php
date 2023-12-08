@@ -335,7 +335,7 @@
                                             <form method="POST" action="{{ route('student.reportbydate') }}"
                                                 target="_blank">
                                                 @csrf
-                                                <label>Generate student report by date</label>
+                                                <label>Attendance Report by Date</label>
                                                 <div class="input-group mb-3">
                                                     <input type="date" name="date" id="date"
                                                         class="form-control">
@@ -350,7 +350,37 @@
                                             <form method="POST" action="{{ route('student.reportbymonth') }}"
                                                 target="_blank">
                                                 @csrf
-                                                <label>Generate student report by month</label>
+                                                <label>Attendance Report by Date</label>
+                                                <div class="input-group mb-3">
+                                                    <input type="month" name="month" id="month"
+                                                        class="form-control">
+                                                    <div class="input-group-append">
+                                                        <button type="submit" class="btn btn-primary">Generate
+                                                            Report</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="form-group">
+                                            <form method="POST" action="{{ route('student.demeritbydate') }}"
+                                                target="_blank">
+                                                @csrf
+                                                <label>Demerit Report by Date</label>
+                                                <div class="input-group mb-3">
+                                                    <input type="date" name="date" id="date"
+                                                        class="form-control">
+                                                    <div class="input-group-append">
+                                                        <button type="submit" class="btn btn-primary">Generate
+                                                            Report</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="form-group">
+                                            <form method="POST" action="{{ route('student.demeritbymonth') }}"
+                                                target="_blank">
+                                                @csrf
+                                                <label>Demerit Report by Month</label>
                                                 <div class="input-group mb-3">
                                                     <input type="month" name="month" id="month"
                                                         class="form-control">

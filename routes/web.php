@@ -22,10 +22,12 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('/', [AuthController::class, 'showLogin'])->name('auth.login');
     Route::middleware('auth')->get('admin-dashboard', [AdminController::class, 'showDashboard'])->name('admin.dashboard');
+    Route::middleware('auth')->post('demerit-report-by-date', [AdminController::class, 'getDemeritReportbyDate'])->name('student.demeritbydate');
     Route::middleware('auth')->post('student-report-by-date', [AdminController::class, 'allStudentReportByDate'])->name('student.reportbydate');
+    Route::middleware('auth')->post('demerit-report-by-month', [AdminController::class, 'getDemeritReportbyMonth'])->name('student.demeritbymonth');
     Route::middleware('auth')->post('student-report-by-month', [AdminController::class, 'getStudentReportByMonth'])->name('student.reportbymonth');
     Route::middleware('auth')->get('grade-system', [AdminController::class, 'gradeSystem'])->name('grade.system');
-    
+
     Route::post('check-attendance', [AdminController::class, 'attendanceCheck']);
 
     Route::get('school-activity-receipt', [ReceiptController::class, 'schoolActivityReceipt']);
@@ -38,7 +40,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 
     Route::post('grade-student-sync', [AdminController::class, 'gradeSystemSync'])->name('grade.sync');
     Route::post('attendance-student-sync', [AdminController::class, 'attendanceSync'])->name('attendance.sync');
-    
+
     Route::middleware('auth:api')->group(function () {
         Route::post('add-students', [AdminController::class, 'registerStudent']);
         Route::get('generate-qrcode/{id}', [QrGeneratorController::class, 'generateQrCode']);

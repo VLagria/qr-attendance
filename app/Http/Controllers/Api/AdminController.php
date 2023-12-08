@@ -217,7 +217,7 @@ class AdminController extends Controller
                     'is_late' => false
                 ]);
 
-                
+
 
                 $receiptUrl = route('monthly.receipt', ['id' => $attendance->id]);
 
@@ -263,26 +263,28 @@ class AdminController extends Controller
         }
     }
 
-    public function attendance_receipt($id){
-
+    public function attendance_receipt($id)
+    {
     }
 
-    public function gradeSystem(Request $request){
+    public function gradeSystem(Request $request)
+    {
         try {
             // dd($request->all()); die();
             if (Auth::check()) {
                 if ($request->grade_type === "Demerit") {  //Demerit
                     $points = 0;
                     $retrieve_current_points = DB::table('demerits')
-                                        ->where('student_id', $request->student_id)
-                                        ->where('demerits.id', 'DESC')
-                                        ->first();
-                    if (isNull($retrieve_current_points->previous_points) || $retrieve_current_points->previous_points === 0) {
+                        ->where('student_id', $request->student_id)
+                        ->where('demerits.id', 'DESC')
+                        ->first();
+
+                    if (!$retrieve_current_points) {
                         $points = $request->points;
-                    }else{
+                    } else {
                         $points = $request->points + $retrieve_current_points->previous_points;
                     }
-                    
+
                     $demerit = Demerit::create([
                         'student_id' => $request->student_id,
                         'points' => $request->points,
@@ -299,12 +301,12 @@ class AdminController extends Controller
 
                     $points = 0;
                     $retrieve_current_points = DB::table('merits')
-                                        ->where('student_id', $request->student_id)
-                                        ->where('demerits.id', 'DESC')
-                                        ->first();
-                    if (isNull($retrieve_current_points->previous_points) || $retrieve_current_points->previous_points === 0) {
+                        ->where('student_id', $request->student_id)
+                        ->where('demerits.id', 'DESC')
+                        ->first();
+                    if (!$retrieve_current_points->previous_points) {
                         $points = $request->points;
-                    }else{
+                    } else {
                         $points = $request->points + $retrieve_current_points->previous_points;
                     }
                     $merit = Merit::create([
@@ -317,14 +319,13 @@ class AdminController extends Controller
                     ]);
 
                     $type = $request->grade_type;
-    
+
                     $receiptUrl = route('merit.receipt', ['id' => $merit->id]);
 
                     return response(['msg' => 'Student present', 'url' => $receiptUrl], 200);
                 }
             }
             return redirect()->route('auth.login');
-            
         } catch (ModelNotFoundException $e) {
             return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
         } catch (\Exception $e) {
@@ -332,7 +333,8 @@ class AdminController extends Controller
         }
     }
 
-    public function gradeSystemSync(Request $request){
+    public function gradeSystemSync(Request $request)
+    {
         foreach ($request->students as  $student) {
             # code...
             if ($student->grade_type === "Demerit") {  //Demerit
@@ -396,7 +398,7 @@ class AdminController extends Controller
                         'is_absent' => false,
                         'is_late' => true
                     ]);
-                }  
+                }
             }
             return response(['msg' => "Attendance Sync Successfully"], 200);
         } catch (ModelNotFoundException $e) {
@@ -404,5 +406,66 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return response(['error' => 'An error occurred', 'msg' => $e->getMessage()], 500);
         }
+    }
+
+    public function getDemeritReportbyDate(Request $request)
+    {
+        if (Auth::check()) {
+            try {
+                $report = DB::table('demerits')
+                    ->join('students', 'demerits.student_id', 'students.id')
+                    ->select('demerits.*', 'students.student_id as display_id', 'students.first_name', 'students.last_name', 'students.middle_name')
+                    ->where('demerits.date', $request->date)
+                    ->orderBy('demerits.date', 'DESC')
+                    ->get();
+
+                $dataArray = $report->toArray();
+                $pdf = new PDF();
+                $pdf = PDF::LoadView('pdf.demerit_report_date', ['data' => $dataArray]);
+                return $pdf->download('demerit_report_by_date.pdf');
+                // return $report;
+            } catch (ModelNotFoundException $e) {
+                return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
+            } catch (\Exception $e) {
+                return response(['error' => 'An error occurred', 'msg' => $e->getMessage()], 500);
+            }
+        }
+
+        return redirect()->route('auth.login');
+    }
+
+    public function getDemeritReportbyMonth(Request $request)
+    {
+        if (Auth::check()) {
+            try {
+                $month = $request->month;
+                $report = DB::table('demerits')
+                    ->join('students', 'demerits.student_id', 'students.id')
+                    ->select('demerits.*', 'students.student_id as display_id', 'students.first_name', 'students.last_name', 'students.middle_name')
+                    ->whereRaw("DATE_FORMAT(demerits.date, '%Y-%m') = ?", [$month])
+                    ->orderBy('demerits.date', 'ASC')
+                    ->get();
+                $organizedData = [];
+                foreach ($report as $item) {
+                    $yearMonth = date('Y-m', strtotime($item->date));
+                    if (!isset($organizedData[$yearMonth])) {
+                        $organizedData[$yearMonth] = [];
+                    }
+                    $organizedData[$yearMonth][] = $item;
+                }
+
+                $dataArray = $organizedData;
+                $pdf = new PDF();
+                $pdf = PDF::LoadView('pdf.demerit_report_month', ['data' => $dataArray]);
+                return $pdf->download('demerit_report_by_month.pdf');
+                // return $report;
+            } catch (ModelNotFoundException $e) {
+                return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
+            } catch (\Exception $e) {
+                return response(['error' => 'An error occurred', 'msg' => $e->getMessage()], 500);
+            }
+        }
+
+        return redirect()->route('auth.login');
     }
 }

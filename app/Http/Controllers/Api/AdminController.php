@@ -170,11 +170,11 @@ class AdminController extends Controller
             try {
                 $month = $request->month;
                 $report = DB::table('attendances')
-                            ->join('students', 'attendances.student_id', 'students.id')
-                            ->select('attendances.*', 'students.student_id as display_id', 'students.first_name', 'students.last_name', 'students.middle_name')
-                            ->whereRaw("DATE_FORMAT(attendances.date, '%Y-%m') = ?", [$month])
-                            ->orderBy('attendances.date', 'ASC')
-                            ->get();
+                    ->join('students', 'attendances.student_id', 'students.id')
+                    ->select('attendances.*', 'students.student_id as display_id', 'students.first_name', 'students.last_name', 'students.middle_name')
+                    ->whereRaw("DATE_FORMAT(attendances.date, '%Y-%m') = ?", [$month])
+                    ->orderBy('attendances.date', 'ASC')
+                    ->get();
                 $organizedData = [];
                 foreach ($report as $item) {
                     $yearMonth = date('Y-m', strtotime($item->date));
@@ -183,7 +183,7 @@ class AdminController extends Controller
                     }
                     $organizedData[$yearMonth][] = $item;
                 }
-            
+
                 $dataArray = $organizedData;
                 $pdf = new PDF();
                 $pdf = PDF::LoadView('pdf.report_month', ['data' => $dataArray]);
@@ -269,6 +269,68 @@ class AdminController extends Controller
                 ]);
 
                 return response(['msg' => "Attendance Checked"], 200);
+            }
+        } catch (ModelNotFoundException $e) {
+            return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response(['error' => 'An error occurred', 'msg' => $e->getMessage()], 500);
+        }
+    }
+
+    public function attendanceSync(Request $request)
+    {
+        try {
+            $student_list = $request->students; //naa diri tanan students
+            foreach ($student_list as $student) {
+                if ($student->attendance_type === "0") { //absent
+                    Attendance::create([
+                        'description' => $student->description,
+                        'is_present' => false,
+                        'student_id' => $student->student_id,
+                        'date' => $student->attendance_date,
+                        'time' => $student->attendance_time,
+                        'is_absent' => true,
+                        'is_late' => false,
+                        'demerit' => $student->demerit_points,
+                        'demerit_remarks' => $student->attendance_demerit,
+                        'merit' => $student->merit_points,
+                        'merit_remarks' => $student->attendance_merit
+                    ]);
+                }
+
+                if ($student->attendance_type === "1") { //present
+                    Attendance::create([
+                        'description' => $student->description,
+                        'is_present' => true,
+                        'student_id' => $student->student_id,
+                        'date' => $student->attendance_date,
+                        'time' => $student->attendance_time,
+                        'is_absent' => false,
+                        'is_late' => false,
+                        'demerit' => $student->demerit_points,
+                        'demerit_remarks' => $request->attendance_demerit,
+                        'merit' => $student->merit_points,
+                        'merit_remarks' => $student->attendance_merit
+                    ]);
+                }
+
+                if ($student->attendance_type === "2") { //late
+                    Attendance::create([
+                        'description' => $student->description,
+                        'is_present' => false,
+                        'student_id' => $student->student_id,
+                        'date' => $student->attendance_date,
+                        'time' => $student->attendance_time,
+                        'is_absent' => false,
+                        'is_late' => true,
+                        'demerit' => $student->demerit_points,
+                        'demerit_remarks' => $student->attendance_demerit,
+                        'merit' => $student->merit_points,
+                        'merit_remarks' => $student->attendance_merit
+                    ]);
+                }
+
+                return response(['msg' => "Attendance Sync Successfully"], 200);
             }
         } catch (ModelNotFoundException $e) {
             return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);

@@ -1,151 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Student Report By Month</title>
-    <!-- General CSS Files -->
-    <link rel="stylesheet" href="assets/modules/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/modules/fontawesome/css/all.min.css">
-    <!-- Template CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Document</title>
 
     <style>
-        /* Default styles */
-
         body {
-            background-color: #f8f9fa; /* Light shade for bond paper effect */
+            font-family: Arial, sans-serif;
         }
 
-        .card {
-            background-color: #fff; /* White background for the card */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .container {
+            max-width: 800px;
             margin: 0 auto;
-            margin-bottom: 20px;
-            padding: 20px;
         }
 
-        .card-body {
-            padding: 20px;
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #ccc;
         }
 
-        div {
-            box-sizing: border-box;
-        }
-
-        div.table {
-            display: table;
-            width: 100%;
-        }
-
-        div.table-header-group {
-            display: table-header-group;
-        }
-
-        div.table-row {
-            display: table-row;
-        }
-
-        div.table-cell {
-            display: table-cell;
-        }
-
-        img {
-            max-width: 100%;
+        .image-left img,
+        .image-right img {
+            max-width: 100px;
             height: auto;
         }
 
-        div.table-cell p {
+        .center-title {
             text-align: center;
         }
 
-        /* Responsive styles */
-        @media (max-width: 768px) {
-            div.table-row {
-                display: block;
+        .content-body {
+            padding: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: none;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 20px;
             }
 
-            div.table-cell {
+            .header {
+                border-bottom: none;
                 display: block;
-                width: 100%;
-                box-sizing: border-box;
-                padding: 10px;
                 text-align: center;
             }
 
-            div.table-cell img {
-                margin-bottom: 10px;
-            }
-        }
-        @media print {
-            body {
-                background-color: #fff; /* White background for printing */
+            .image-left,
+            .center-title,
+            .image-right {
+                display: inline-block;
+                vertical-align: top;
             }
 
-            .card {
-                box-shadow: none; /* Remove box shadow for printing */
-                border: 1px solid #ddd; /* Add a border for better separation */
-                margin: 0; /* Remove margin for printing */
+            .center-title {
+                margin: 20px 0;
             }
 
-            .card-body {
-                padding: 10px; /* Adjust padding for printing */
+            .content-body {
+                padding: 0;
             }
 
-            /* Add any additional styles for printing as needed */
+            .footer {
+                text-align: center;
+                margin-top: 20px;
+                padding-top: 20px;
+                border-top: none;
+            }
         }
     </style>
 </head>
+
 <body>
-    <div class="card" style="margin-bottom: -40px">
-        <div class="table">
-            <div class="table-header-group">
-                <div class="table-row">
-                    <div class="table-cell">
-                        <img src="{{ asset('assets/img/hcdc-logo.png') }}" style="width: 200px; height: 200px" alt="Your Image">
-                    </div>
-                    <div class="table-cell">
-                        <p>Holy Cross of Davao College</p>
-                        <p><strong>COLLEGE OF CRIMINAL JUSTICE EDUCATION</strong></p>
-                        <p>Sta. Ana Avenue, corner C. de Guzman</p>
-                        <p>Brgy. 14-B, Davao City, Philippines</p>
-                    </div>
-                    <div class="table-cell">
-                        <div style="text-align: right;">
-                            <img src="{{ asset('assets/img/hcdc-crim-logo.png') }}" alt="Your Image">
-                        </div>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="header">
+            <div class="image-left">
+                <img src="{{ asset('assets/img/hcdc-logo.png') }}" alt="Your Image">
+            </div>
+            <div class="center-title">
+                <p>Holy Cross of Davao College</p>
+                <p><strong>COLLEGE OF CRIMINAL JUSTICE EDUCATION</strong></p>
+                <p>Sta. Ana Avenue, corner C. de Guzman</p>
+                <p>Brgy. 14-B, Davao City, Philippines</p>
+            </div>
+            <div class="image-right">
+                <img src="{{ asset('assets/img/hcdc-crim-logo.png') }}" alt="Your Image">
             </div>
         </div>
+        <div class="content-body">
+            <p><strong>Student ID:</strong> 123456</p>
+            <p><strong>Name:</strong> John Doe</p>
+            <p><strong>Year Level:</strong> 3rd Year</p>
+            <p><strong>Date:</strong> December 7, 2023</p>
+            <p><strong>Time:</strong> 10:00 AM</p>
+        </div>
     </div>
-    <div class="card-body" style="margin-bottom: -40px">
-        <p style="font-size: 10px;"><strong></strong></p>
-        <table class="table" style="font-size: 16px;">
-            <thead>
-                <tr>
-                    <th scope="col">Student ID: </th>
-                </tr>
-                <tr>
-                    <th scope="col">Name: </th>
-                </tr>
-                <tr>
-                    <th scope="col">Year Level: </th>
-                </tr>
-                <tr>
-                    <th scope="col">Date: </th>
-                </tr>
-                <tr>
-                    <th scope="col">Time: </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-
-                </tr>
-            </tbody>
-        </table>
+    <div class="footer">
+        <p><strong>MONTHLY FORMATION</strong></p>
+        <p>Remarks: Present/Late</p>
+        <br>
+        <p>Arvin V. Timbang, MSCRIM</p>
+        <p>CJE Program Chairperson</p>
     </div>
 </body>
+
 </html>

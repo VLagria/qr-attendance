@@ -18,6 +18,9 @@
             <a href="#" class="btn btn-icon icon-left btn-dark grade-attendance" data-toggle="modal"
             data-target="#grade-modal" data-student-id="{{ $value->id }}"><i class="fas fa-hand-point-up"></i>
                 Grade</a>
+            <a href="#" class="btn btn-icon icon-left btn-success track-modal" data-toggle="modal"
+            data-target="#track-modal" data-student-id="{{ $value->id }}"><i class="fas fa-search"></i>
+                Track</a>
         </td>
     </tr>
 @endforeach

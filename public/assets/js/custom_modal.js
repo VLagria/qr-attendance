@@ -95,6 +95,14 @@ $(document).ready(function () {
         $("#grade_student_id").val($(this).data("student-id"));
     });
 
+    $(".track-modal").on("click", function (e) {
+        e.preventDefault();
+        // console.log($(this).data("student-id"))
+        $(".track_student_id").val($(this).data("student-id"));
+        var id = $(this).data("student-id");
+        getPoints(id);
+    });
+
     $("#attendance-button").on("click", function (e) {
         e.preventDefault();
         var accessToken = localStorage.getItem("access_token");
@@ -265,6 +273,24 @@ function updateStudentList() {
             console.error("Error fetching student list:", error);
         },
     });
+}
+
+function getPoints(id){
+    var accessToken = localStorage.getItem("access_token");
+    $.ajax({
+        type: "GET",
+        headers: {
+            Authorization: "Bearer " + accessToken,
+        },
+        url: "get-points/"+ id,
+        success: function (data) {
+            $('#demerit_total_points').html(data.demerit_sum - data.merit_sum)
+            console.log(data);
+        },
+        error: function (error) {
+            console.error("Error fetching student list:", error);
+        },
+    }); 
 }
 
 function printSvg() {

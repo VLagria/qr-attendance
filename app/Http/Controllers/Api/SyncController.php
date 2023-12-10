@@ -8,12 +8,13 @@ use App\Models\Demerit;
 use App\Models\Merit;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SyncController extends Controller
 {
     public function attendanceSync(Request $request)
     {
-        
+
         try {
             $student_list = $request->students; //naa diri tanan students
             foreach ($student_list as $student) {
@@ -51,7 +52,7 @@ class SyncController extends Controller
                         'is_absent' => false,
                         'is_late' => true
                     ]);
-                }  
+                }
             }
             return response(['msg' => "Attendance Sync Successfully"], 200);
         } catch (ModelNotFoundException $e) {
@@ -61,28 +62,67 @@ class SyncController extends Controller
         }
     }
 
-    public function gradeSystemSync(Request $request){
+    public function gradeSystemSync(Request $request)
+    {
         foreach ($request->students as  $student) {
-            # code...
-            if ($student['grade_type'] === "Demerit") {  //Demerit
-                Demerit::create([
+            if ($request['grade_type'] === "Demerit") {  //Demerit
+                $points = 0;
+                $current_points = 0;
+                $prev_points = 0;
+                $retrieve_current_points = DB::table('demerits')
+                    ->where('student_id', $student['student_id'])
+                    ->orderBy('demerits.id', 'DESC')
+                    ->first();
+                if ($retrieve_current_points) {
+                    $current_points = $student['points'] + $retrieve_current_points->current_points;
+                    $points = $student['points'];
+                    $prev_points = $retrieve_current_points->current_points;
+                } else {
+                    $current_points = $student['points'];
+                    $points = $student['points'];
+                    $prev_points = $student['points'];
+                }
+
+                $demerit = Demerit::create([
                     'student_id' => $student['student_id'],
                     'points' => $student['points'],
-                    'descriptions' => $student['grade_descriptions'],
+                    'description' => $student['grade_descriptions'],
                     'date' => $student['grade_date'],
-                    'time' => $student['grade_time']
+                    'time' => $student['grade_time'],
+                    'current_points' => $current_points,
+                    'previous_points' => $prev_points
                 ]);
             }
-            if ($student->grade_type === "Merit") {  //Merit
-                Merit::create([
+            if ($student['grade_type'] === "Merit") {  //Merit
+
+                $points = 0;
+                $current_points = 0;
+                $prev_points = 0;
+                $retrieve_current_points = DB::table('merits')
+                    ->where('student_id', $request->student_id)
+                    ->orderBy('merits.id', 'DESC')
+                    ->first();
+                if ($retrieve_current_points) {
+                    $current_points = $student['points'] + $retrieve_current_points->current_points;
+                    $points = $student['points'];
+                    $prev_points = $retrieve_current_points->current_points;
+                } else {
+                    $current_points = $student['points'];
+                    $points = $student['points'];
+                    $prev_points = $student['points'];
+                }
+
+                $merit = Merit::create([
                     'student_id' => $student['student_id'],
                     'points' => $student['points'],
-                    'descriptions' => $student['grade_descriptions'],
+                    'description' => $student['grade_descriptions'],
                     'date' => $student['grade_date'],
-                    'time' => $student['grade_time']
+                    'time' => $student['grade_time'],
+                    'current_points' => $current_points,
+                    'previous_points' => $prev_points
                 ]);
             }
         }
-        return response(['msg' => "Attendance Sync Successfully"], 200);
+        return response(['msg' => "Sync Successfully"], 200);
     }
 }

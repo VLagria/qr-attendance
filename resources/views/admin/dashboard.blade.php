@@ -118,7 +118,7 @@
                                                 <th>Student ID#</th>
                                                 <th>Name</th>
                                                 <th>Year Level</th>
-                                                <th style="width: 400px">Action</th>
+                                                <th style="width: 500px">Action</th>
                                             </tr>
                                             <tbody id="student-list-container">
 
@@ -350,7 +350,7 @@
                                             <form method="POST" action="{{ route('student.reportbymonth') }}"
                                                 target="_blank">
                                                 @csrf
-                                                <label>Attendance Report by Date</label>
+                                                <label>Attendance Report by Month</label>
                                                 <div class="input-group mb-3">
                                                     <input type="month" name="month" id="month"
                                                         class="form-control">
@@ -381,6 +381,36 @@
                                                 target="_blank">
                                                 @csrf
                                                 <label>Demerit Report by Month</label>
+                                                <div class="input-group mb-3">
+                                                    <input type="month" name="month" id="month"
+                                                        class="form-control">
+                                                    <div class="input-group-append">
+                                                        <button type="submit" class="btn btn-primary">Generate
+                                                            Report</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="form-group">
+                                            <form method="POST" action="{{ route('student.meritbydate') }}"
+                                                target="_blank">
+                                                @csrf
+                                                <label>Merit Report by Date</label>
+                                                <div class="input-group mb-3">
+                                                    <input type="date" name="date" id="date"
+                                                        class="form-control">
+                                                    <div class="input-group-append">
+                                                        <button type="submit" class="btn btn-primary">Generate
+                                                            Report</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="form-group">
+                                            <form method="POST" action="{{ route('student.meritbymonth') }}"
+                                                target="_blank">
+                                                @csrf
+                                                <label>Merit Report by Month</label>
                                                 <div class="input-group mb-3">
                                                     <input type="month" name="month" id="month"
                                                         class="form-control">
@@ -507,8 +537,57 @@
                                         </div>
                                     </div>
                                 </div>
-                            </di>
+                            </div>
 
+                            <div class="modal fade" id="track-modal" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="">Demerit Points: </h5> <p class="text-danger" id="demerit_total_points"></p> <br>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" action="{{ route('student.attendance') }}">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <p class="text-capitalize text-bold text-black-50">Track Student Attendance: </p>
+                                                    <input type="hidden" class="track_student_id" id="track_student_id" name="track_student_id">
+                                                    <button type="submit" class="form-control btn btn-primary"
+                                                    id="grade-button">Generate</button>
+                                                </div>
+                                            </form>
+                                            <form method="POST" action="{{ route('student.demerit') }}">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <p class="text-capitalize text-bold text-black-50">Track Student Demerit: </p>
+                                                    <input type="hidden" class="track_student_id" id="track_student_id" name="demerit_student_id">
+                                                    <button type="submit" class="form-control btn btn-primary"
+                                                    id="grade-button">Generate</button>
+                                                </div>
+                                            </form>
+                                            <form method="POST" action="{{ route('student.merit') }}">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <p class="text-capitalize text-bold text-black-50">Track Student Merit: </p>
+                                                    <input type="hidden" class="track_student_id" id="track_student_id" name="merit_student_id">
+                                                    <button type="submit" class="form-control btn btn-primary"
+                                                    id="grade-button">Generate</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary"
+                                                id="grade-button">Attendance</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
         </div>
         <footer class="main-footer">
             <div class="footer-left">

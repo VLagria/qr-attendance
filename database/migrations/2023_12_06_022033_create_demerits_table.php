@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('description');
             $table->date('date');
             $table->string('time');
-            $table->integer('previous_points')->nullable(); 
+            $table->integer('current_points')->nullable();
+            $table->integer('previous_points')->nullable();
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->timestamps();
         });

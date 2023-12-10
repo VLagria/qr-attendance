@@ -15,6 +15,7 @@ class Demerit extends Model
         'description',
         'date',
         'time',
-        'previous_points'
+        'previous_points',
+        'current_points'
     ];
 }

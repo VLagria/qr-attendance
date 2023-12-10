@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>Student Report By Month</title>
+<title>Student Merit Report By Month</title>
 <!-- General CSS Files -->
 <link rel="stylesheet" href="assets/modules/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/modules/fontawesome/css/all.min.css">
@@ -49,7 +49,8 @@
                 <tr>
                     <th scope="col">Student ID</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Remarks</th>
+                    <th scope="col">Merit</th>
+                    <th scope="col">Points</th>
                     <th scope="col">Date</th>
                     <th scope="col">Time</th>
                 </tr>
@@ -59,15 +60,10 @@
                     <tr>
                         <td>{{ $val->display_id }}</td>
                         <td>{{ $val->last_name }}, {{ $val->first_name }} {{ $val->middle_name }}</td>
-                        @if ($val->is_present === 1)
-                            <td>Present</td>
-                        @elseif ($val->is_absent === 1)
-                            <td>Absent</td>
-                        @elseif ($val->is_late === 1)
-                            <td>Late</td>
-                        @endif
+                        <td>{{ $val->description }}</td>
+                        <td>{{ $val->points }}</td>
                         <td>{{ $val->date }}</td>
-                        <td>{{ date('h:i A', strtotime($val->time)) }}</td>
+                        <td>{{ date("h:i A", strtotime($val->time)) }}</td>
                     </tr>
                 @endforeach
             </tbody>

@@ -49,6 +49,7 @@
                 <tr>
                     <th scope="col">Student ID</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Description</th>
                     <th scope="col">Remarks</th>
                     <th scope="col">Date</th>
                     <th scope="col">Time</th>
@@ -59,6 +60,7 @@
                     <tr>
                         <td>{{ $val->display_id }}</td>
                         <td>{{ $val->last_name }}, {{ $val->first_name }} {{ $val->middle_name }}</td>
+                        <td>{{ $val->description }}</td>
                         @if ($val->is_present === 1)
                             <td>Present</td>
                         @elseif ($val->is_absent === 1)

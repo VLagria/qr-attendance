@@ -73,7 +73,7 @@
 
                         <li class="menu-header">List</li>
 
-                        <li class=active><a class="nav-link" href="blank.html"><i class="far fa-square"></i>
+                        <li class=active><a class="nav-link" href="blank.html"><i class="far fa-user"></i>
                                 <span>Students</span></a></li>
 
                     </ul>
@@ -149,7 +149,7 @@
                                     <i class="fas fa-list-ol"></i>
                                 </div>
                             </div>
-                            <input type="student_id" class="form-control" placeholder="student id" name="student_id">
+                            <input type="student_id" class="form-control" required placeholder="student id" name="student_id">
                         </div>
                     </div>
                     <div class="form-group">
@@ -160,7 +160,7 @@
                                     <i class="fas fa-hashtag"></i>
                                 </div>
                             </div>
-                            <input type="year_level" class="form-control" placeholder="Year level" name="year_level">
+                            <input type="year_level" class="form-control" required placeholder="Year level" name="year_level">
                         </div>
                     </div>
                     <div class="form-group">
@@ -171,7 +171,7 @@
                                     <i class="fas fa-user"></i>
                                 </div>
                             </div>
-                            <input type="text" class="form-control" placeholder="First name" name="first_name"
+                            <input type="text" class="form-control" required placeholder="First name" name="first_name"
                                 id="first_name">
                         </div>
                     </div>
@@ -183,7 +183,7 @@
                                     <i class="fas fa-user"></i>
                                 </div>
                             </div>
-                            <input type="text" class="form-control" placeholder="Last name" name="last_name"
+                            <input type="text" class="form-control" required placeholder="Last name" name="last_name"
                                 id="last_name">
                         </div>
                     </div>
@@ -195,7 +195,7 @@
                                     <i class="fas fa-user"></i>
                                 </div>
                             </div>
-                            <input type="text" class="form-control" placeholder="Middle name" name="middle_name"
+                            <input type="text" class="form-control" required placeholder="Middle name" name="middle_name"
                                 id="middle_name">
                         </div>
                     </div>
@@ -519,7 +519,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Descriptions</label>
-                                                    <input type="text" class="form-control" name="grade_descriptions" placeholder="Enter Violation"
+                                                    <input type="text" class="form-control" name="grade_descriptions" placeholder="Enter Description"
                                                         id="grade_descriptions">
                                                 </div>
                                                 <div class="form-group">
@@ -574,6 +574,15 @@
                                                 <div class="form-group">
                                                     <p class="text-capitalize text-bold text-black-50">Track Student Merit: </p>
                                                     <input type="hidden" class="track_student_id" id="track_student_id" name="merit_student_id">
+                                                    <button type="submit" class="form-control btn btn-primary"
+                                                    id="grade-button">Generate</button>
+                                                </div>
+                                            </form>
+                                            <form method="POST" action="{{ route('track.record') }}">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <p class="text-capitalize text-bold text-black-50">Track All Records: </p>
+                                                    <input type="hidden" class="track_student_id" id="track_student_id" name="record_student_id">
                                                     <button type="submit" class="form-control btn btn-primary"
                                                     id="grade-button">Generate</button>
                                                 </div>

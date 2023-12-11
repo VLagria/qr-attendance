@@ -16,7 +16,7 @@ class QrGeneratorController extends Controller
     {
         try {
 
-            $data = Student::where('id', $id)->first();
+            $data = Student::where('id', $id)->select('id', 'student_id', 'first_name', 'last_name', 'middle_name', 'year_lvl')->first();
 
             $qrcode = QrCode::size(300)->generate(json_encode($data));
             return $qrcode;

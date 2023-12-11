@@ -65,7 +65,7 @@ class SyncController extends Controller
     public function gradeSystemSync(Request $request)
     {
         foreach ($request->students as  $student) {
-            if ($request['grade_type'] === "Demerit") {  //Demerit
+            if ($student['grade_type'] === "Demerit") {  //Demerit
                 $points = 0;
                 $current_points = 0;
                 $prev_points = 0;

@@ -49,7 +49,7 @@ $("#modal-3").fireModal({
                 modal
                     .find(".modal-body")
                     .prepend(
-                        '<div class="alert alert-danger">An error occurred. Please check your browser console.</div>'
+                        '<div class="alert alert-danger">All input required</div>'
                     );
                 console.error("Error:", error);
             },
@@ -160,7 +160,7 @@ $("#modal-5").fireModal({
         
         $.ajax({
             type: "POST",
-            url: "add-students", // Replace with the actual URL
+            url: "add-students", 
             data: form_data,
             headers: {
                 "X-CSRF-TOKEN": csrfToken,
@@ -185,7 +185,7 @@ $("#modal-5").fireModal({
                 modal
                     .find(".modal-body")
                     .prepend(
-                        '<div class="alert alert-danger">An error occurred. Please check your browser console.</div>'
+                        '<div class="alert alert-danger">Please fill up all inputs</div>'
                     );
                 console.error("Error:", error);
             },

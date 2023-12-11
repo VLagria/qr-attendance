@@ -1,15 +1,15 @@
 {
     "font awesome 5 brands": {
-        "normal": "font_awesome_5_brands_normal_8625063beeeb84bc25b6a14bb46c4969"
+        "normal": "font_awesome_5_brands_normal_c1800562a7f65311baf858d9c2279bae"
     },
     "font awesome 5 free": {
-        "normal": "C:\\Users\\ADMIN\\Hcdc\\qr-attendance\\storage\\fonts\/font_awesome_5_free_normal_3d3ce1dcf1606335006147f014f21399",
-        "900": "font_awesome_5_free_900_d5d29174adc879e90cf6dc07a0249c9a"
+        "normal": "\/media\/mediaone-vicent\/New Volume\/qr-attendance\/storage\/fonts\/font_awesome_5_free_normal_dd901c891dcad0b09e267c522e867880",
+        "900": "font_awesome_5_free_900_1b9e1c9937d7e0061577d2df4947244a"
     },
     "nunito": {
-        "normal": "C:\\Users\\ADMIN\\Hcdc\\qr-attendance\\storage\\fonts\/nunito_normal_158a641c548af1009ed3993db8b6d566",
-        "600": "C:\\Users\\ADMIN\\Hcdc\\qr-attendance\\storage\\fonts\/nunito_600_823af225773693b3055230b5e90900ce",
-        "bold": "C:\\Users\\ADMIN\\Hcdc\\qr-attendance\\storage\\fonts\/nunito_bold_693608f160077905a1529449074e2d17",
-        "800": "nunito_800_9cf95fe4bf5acfe8a48cb04b80093ad5"
+        "normal": "\/media\/mediaone-vicent\/New Volume\/qr-attendance\/storage\/fonts\/nunito_normal_de0b1111867d94ba379623f087ee2db1",
+        "600": "\/media\/mediaone-vicent\/New Volume\/qr-attendance\/storage\/fonts\/nunito_600_745f916c5e2f2d0c61b6b8adc2aea01d",
+        "bold": "\/media\/mediaone-vicent\/New Volume\/qr-attendance\/storage\/fonts\/nunito_bold_2aef24cf8b7af624bef317a045e1c347",
+        "800": "nunito_800_eb0013614887469eecbf4c85c9ee325a"
     }
 }

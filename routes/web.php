@@ -20,8 +20,11 @@ use App\Http\Controllers\Api\StudentController;
 
 Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('register', [AuthController::class, 'register'])->name('register');
     Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('/', [AuthController::class, 'showLogin'])->name('auth.login');
+    Route::get('registration', [AuthController::class, 'showRegistration'])->name('auth.registration');
+
     Route::middleware('auth')->get('admin-dashboard', [AdminController::class, 'showDashboard'])->name('admin.dashboard');
     Route::middleware('auth')->post('merit-report-by-date', [AdminController::class, 'getMeritReportByDate'])->name('student.meritbydate');
     Route::middleware('auth')->post('demerit-report-by-date', [AdminController::class, 'getDemeritReportbyDate'])->name('student.demeritbydate');
@@ -37,6 +40,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::middleware('auth')->post('student-merit-report', [StudentController::class, 'studentMeritTrack'])->name('student.merit');
 
     Route::middleware('auth')->get('get-points/{id}', [StudentController::class, 'getPoints'])->name('get.points');
+    Route::middleware('auth')->post('student-all-track-record', [StudentController::class, 'allTrackRecord'])->name('track.record');
 
     Route::post('check-attendance', [AdminController::class, 'attendanceCheck']);
 

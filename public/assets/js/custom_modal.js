@@ -175,22 +175,20 @@ function updateStudent(formData, csrfToken) {
     var accessToken = localStorage.getItem("access_token");
 
     $.ajax({
-        type: "POST", // You may need to adjust the HTTP method based on your server-side implementation
-        url: "update-student", // Replace with the actual endpoint to update student details
+        type: "POST", 
+        url: "update-student", 
         data: formData,
         headers: {
             "X-CSRF-TOKEN": csrfToken,
             Authorization: "Bearer " + accessToken,
         },
         success: function (response) {
-            // Handle the success response
             console.log(response);
-            // Optionally, you can close the modal after a successful update
             updateStudentList();
             $("#update-student").modal("hide");
         },
         error: function (error) {
-            // Handle the error response
+            $('.modal-body').prepend('<div class="alert alert-danger">Please fill up all inputs</div>');
             console.error(error);
         },
     });

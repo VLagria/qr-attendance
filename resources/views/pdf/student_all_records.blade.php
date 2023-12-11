@@ -3,7 +3,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Student Report By Day</title>
+    <title>Student Merit Report By Date</title>
     <!-- General CSS Files -->
     <link rel="stylesheet" href="assets/modules/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/modules/fontawesome/css/all.min.css">
@@ -34,13 +34,20 @@
         </div>
         <div class="card-body">
           <p style="font-size: 10px;"><strong>Date: {{ date("F-d-Y") }}</strong></p>
-          <table class="table" style="font-size: 10px;">
+          <table class="table" style="font-size: 7px;">
             <thead>
               <tr>
                 <th scope="col">Student ID</th>
                 <th scope="col">Name</th>
-                <th scope="col">Description</th>
                 <th scope="col">Remarks</th>
+                <th scope="col">Description</th>
+                <th scope="col">Demerit</th>
+                <th scope="col">Demerit Points</th>
+                <th scope="col">Merit</th>
+                <th scope="col">Merit Points</th>
+                <th scope="col">Demerit Current Points</th>
+                <th scope="col">Merit Current Points</th>
+                <th scope="col">Final Points</th>
                 <th scope="col">Date</th>
                 <th scope="col">Time</th>
               </tr>
@@ -50,7 +57,6 @@
               <tr>
                 <td>{{ $val->display_id }}</td>
                 <td>{{ $val->last_name }}, {{ $val->first_name }} {{ $val->middle_name }}</td>
-                <td>{{ $val->description }}</td>
                 @if ($val->is_present === 1)
                 <td>Present</td>
                 @elseif ($val->is_absent === 1)    
@@ -58,6 +64,14 @@
                 @elseif ($val->is_late === 1)
                 <td>Late</td>
                 @endif
+                <td>{{ $val->description }}</td>
+                <td>{{ $val->demerits_descriptions }}</td>
+                <td>{{ $val->demerit_points }}</td>
+                <td>{{ $val->merits_descriptions }}</td>
+                <td>{{ $val->merit_points }}</td>
+                <td>{{ $val->demerit_current_points }}</td>
+                <td>{{ $val->merit_current_points }}</td>
+                <td>{{ $val->merit_current_points - $val->demerit_current_points }}</td>
                 <td>{{ $val->date }}</td>
                 <td>{{ date("h:i A", strtotime($val->time)) }}</td>
               </tr>

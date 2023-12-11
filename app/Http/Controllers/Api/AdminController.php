@@ -263,10 +263,6 @@ class AdminController extends Controller
         }
     }
 
-    public function attendance_receipt($id)
-    {
-    }
-
     public function gradeSystem(Request $request)
     {
         try {

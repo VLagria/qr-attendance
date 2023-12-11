@@ -201,16 +201,11 @@ class StudentController extends Controller
 
                 $resultArray = $result->toArray();
                 
-
                 $pdf = new PDF();
                 $pdf = PDF::LoadView('pdf.student_all_records', ['data' => $resultArray,
                                                                 'demerit_sum' => $demerit_total_points, 
                                                                 'merit_sum' => $merit_total_points,]);
                 return $pdf->download('student_all_records.pdf');
-
-                // return response(['demerit_sum' => $demerit_total_points, 
-                //                  'merit_sum' => $merit_total_points,
-                //                 'data' => $resultArray], 200);
             } catch (ModelNotFoundException $e) {
                 return response(['error' => 'student not found', 'msg' => $e->getMessage()], 404);
             } catch (\Exception $e) {

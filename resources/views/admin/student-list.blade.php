@@ -10,14 +10,14 @@
                 Edit</a>
             <a href="#" class="btn btn-icon icon-left btn-info show-qr-button" data-toggle="show-qr"
                 data-target="#show-qr" data-student-id="{{ $value->id }}"><i class="fas fa-info-circle"></i>
-                Info</a>
+                QR</a>
             <a href="#" class="btn btn-icon icon-left btn-warning student-attendance" data-toggle="modal"
                 data-target="#attendance-modal" data-student-id="{{ $value->id }}"><i
                     class="fas fa-check"></i>
                 Logs</a>
             <a href="#" class="btn btn-icon icon-left btn-dark grade-attendance" data-toggle="modal"
             data-target="#grade-modal" data-student-id="{{ $value->id }}"><i class="fas fa-hand-point-up"></i>
-                Grade</a>
+                Points</a>
             <a href="#" class="btn btn-icon icon-left btn-success track-modal" data-toggle="modal"
             data-target="#track-modal" data-student-id="{{ $value->id }}"><i class="fas fa-search"></i>
                 Track</a>

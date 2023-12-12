@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\QrGeneratorController;
 use App\Http\Controllers\Api\ReceiptController;
+use App\Http\Controllers\Api\RegisterStudentController;
 use App\Http\Controllers\Api\StudentController;
 
 /*
@@ -23,6 +24,10 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::post('register', [AuthController::class, 'register'])->name('register');
     Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('/', [AuthController::class, 'showLogin'])->name('auth.login');
+
+    Route::get('register-student', [RegisterStudentController::class, 'showStudenRegistration'])->name('register-student');
+    Route::post('register-student-save', [RegisterStudentController::class, 'registerStudent'])->name('pubic.register');
+
     Route::get('registration', [AuthController::class, 'showRegistration'])->name('auth.registration');
 
     Route::middleware('auth')->get('admin-dashboard', [AdminController::class, 'showDashboard'])->name('admin.dashboard');

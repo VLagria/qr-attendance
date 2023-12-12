@@ -19,6 +19,7 @@ class StudentController extends Controller
         $this->middleware('auth');
     }
 
+
     public function studentAttendanceTrack(Request $request)
     {
         if (Auth::check()) {

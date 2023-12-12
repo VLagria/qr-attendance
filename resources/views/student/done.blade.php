@@ -41,7 +41,7 @@
                 </div>
               </form>
               <div class="mt-3">
-                {{-- <a href="#">Back to Home</a> --}}
+                <a href="{{ route('register-student') }}">Register Another Student</a>
               </div>
             </div>
           </div>

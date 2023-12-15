@@ -160,7 +160,7 @@
                                     <i class="fas fa-hashtag"></i>
                                 </div>
                             </div>
-                            <input type="year_level" class="form-control" required placeholder="Year level" name="year_level">
+                            <input type="number" class="form-control" required placeholder="Year level" name="year_level">
                         </div>
                     </div>
                     <div class="form-group">
